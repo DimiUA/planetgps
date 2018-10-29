@@ -1,11 +1,10 @@
 
 <?xml version='1.0' encoding='utf-8'?>
+<widget id="com.planetgps.app" version="1.1.4" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" defaultlocale="en-US" android-versionCode="30" ios-CFBundleVersion="30">
 <!-- 
 android com.planetgps.app
 iOS com.sinopacific.planetgps
  -->
-<widget id="com.planetgps.app" version="1.1.4" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" defaultlocale="en-US" android-versionCode="30" ios-CFBundleVersion="30">
-
     <name>PlanetGPS</name>
     <description>
         PlanetGPS GPS tracker
