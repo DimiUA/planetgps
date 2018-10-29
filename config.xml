@@ -1,8 +1,9 @@
+
+<?xml version='1.0' encoding='utf-8'?>
 <!-- 
 android com.planetgps.app
 iOS com.sinopacific.planetgps
  -->
-<?xml version='1.0' encoding='utf-8'?>
 <widget xmlns:cdv="http://cordova.apache.org/ns/1.0" id="com.planetgps.app" version="1.1.4" xmlns="http://www.w3.org/ns/widgets" defaultlocale="en-US" android-versionCode="30" ios-CFBundleVersion="30">
     <name>PlanetGPS</name>
     <description>
