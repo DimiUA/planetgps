@@ -1,0 +1,244 @@
+<div class="page bg-color-page status_page" data-page="asset.status">
+	<div class="navbar ">
+        <div class="navbar-inner">
+            <div class="left">
+            	<a href="#" class="link backToIndex "> <i class="f7-icons icon-header-arrow-back"></i></a>
+            </div>
+            <div class="left navbar_title">{{Name}}</div>
+            <div class="right">
+            	<a href="#" class="link  buttonAssetEdit"><i class="f7-icons icon-header-edit"></i></a>              	
+            </div>
+        </div>
+    </div>
+    
+	<div class="toolbar tabbar  ">
+	    <div class="toolbar-inner">
+	        <a href="#" class="tab-link active" data-id="asset.status" data-href="">
+	            <span class="tabbar-label"><b>{{@global.LANGUAGE.ASSET_STATUS_MSG07}}</b></span>
+	        </a>
+            <a href="#" class="tab-link" data-id="asset.alarm" data-href="">
+                <span class="tabbar-label"><b>{{@global.LANGUAGE.ALARM_MSG01}}</b></span>
+            </a>
+	        <a href="#" class="tab-link" data-id="asset.playback" data-href="">
+	            <span class="tabbar-label"><b>{{@global.LANGUAGE.ASSET_STATUS_MSG08}}</b></span>
+	        </a>
+	        <a href="#" class="tab-link" data-id="asset.track" data-href="">
+	            <span class="tabbar-label"><b>{{@global.LANGUAGE.ASSET_STATUS_MSG09}}</b></span>
+	        </a>
+
+	        
+	    </div>
+	</div>
+
+    <div class="page-content">
+
+    	<div class="content-block status_block_top">
+    		<div class="row no-gutter">
+			    <div class="col-33">
+                    <!-- <img src="resources/images/svg_date.svg" alt=""> -->
+                    <i class="f7-icons icon-other-data color-dealer"></i>
+                    <p class="">{{@global.LANGUAGE.ASSET_STATUS_MSG00}}</p>  
+                    <p class="position_data position_time color-dealer">{{Time}}</p>
+                </div>                
+                <div class="col-33">
+                    <!-- <img src="resources/images/svg_direction.svg" alt=""> -->
+                    <i class="f7-icons icon-other-speed color-dealer"></i>
+                    <p class="">{{@global.LANGUAGE.ASSET_STATUS_MSG02}}</p>  
+                    <p class="position_data position_speed color-dealer">{{Speed}}</p>
+                    
+                </div> 
+                <div class="col-33">
+                    <!-- <img src="resources/images/svg_speed.svg" alt=""> -->
+                    <i class="f7-icons icon-other-distance color-dealer"></i>
+                    <p class="">{{@global.LANGUAGE.ASSET_STATUS_MSG10}}</p>  
+                    <p class="position_data position_mileage color-dealer">{{Mileage}}</p>                    
+                </div>               
+			</div>
+    	</div>
+		
+		<div class="list-block media-list no-hairlines no-hairlines-between status_block_list">                
+            <ul >
+                <li class="item-content with-borders">
+                    <div class="item-media"><i class="f7-icons icon-data-address color-dealer"></i></div>
+                    <div class="item-inner">                     
+                       	<div class="item-text display_address">{{Address}}</div>                     
+        		    </div>
+                </li>
+                {{#if Acc}} 
+                    <li class="item-content">
+                        <div class="item-media"></div>
+                        <div class="item-inner">                        
+                            <div class="item-text ">
+                                <div class="row no-gutter">
+                                    <div class="col-40">
+                                        {{@global.LANGUAGE.ASSET_STATUS_MSG13}}
+                                    </div>
+                                    <div class="col-60 position_acc color-black">
+                                        {{Acc}}
+                                    </div> 
+                                </div>                                
+                            </div>                                          
+                        </div>
+                    </li>
+                {{/if}} 
+                {{#if Acc2}}                    
+                    <li class="item-content">
+                        <div class="item-media"></div>
+                        <div class="item-inner">                        
+                            <div class="item-text ">
+                                <div class="row no-gutter">
+                                    <div class="col-40">
+                                        {{@global.LANGUAGE.ASSET_STATUS_MSG14}}
+                                    </div>
+                                    <div class="col-60 position_acc2 color-black">
+                                        {{Acc2}}
+                                    </div> 
+                                </div>                                
+                            </div>                                          
+                        </div>
+                    </li>
+                {{/if}} 
+                {{#if Fuel}}                   
+                    <li class="item-content">
+                        <div class="item-media"></div>
+                        <div class="item-inner">                        
+                            <div class="item-text ">
+                                <div class="row no-gutter">
+                                    <div class="col-40">
+                                        {{@global.LANGUAGE.ASSET_STATUS_MSG12}}
+                                    </div>
+                                    <div class="col-60 position_fuel color-black">
+                                        {{Fuel}}
+                                    </div> 
+                                </div>                                
+                            </div>                                          
+                        </div>
+                    </li>
+                {{/if}}   
+                {{#if Voltage}}
+                <li class="item-content">
+                    <div class="item-media"></div>
+                    <div class="item-inner">                        
+                        <div class="item-text ">
+                            <div class="row no-gutter">
+                                <div class="col-40">
+                                    {{@global.LANGUAGE.ASSET_STATUS_MSG06}}
+                                </div>
+                                <div class="col-60 position_voltage color-black">
+                                    {{Voltage}}
+                                </div> 
+                            </div>                                
+                        </div>                                          
+                    </div>
+                </li>
+                {{/if}} 
+                {{#if Battery}}                    
+                    <li class="item-content">
+                        <div class="item-media"></div>
+                        <div class="item-inner">                        
+                            <div class="item-text ">
+                                <div class="row no-gutter">
+                                    <div class="col-40">
+                                        {{@global.LANGUAGE.ASSET_STATUS_MSG11}}
+                                    </div>
+                                    <div class="col-60 position_battery color-black">
+                                        {{Battery}}
+                                    </div> 
+                                </div>                                
+                            </div>                                          
+                        </div>
+                    </li>
+                {{/if}}                  
+                {{#if Temperature}}                    
+                    <li class="item-content">
+                        <div class="item-media"></div>
+                        <div class="item-inner">                        
+                            <div class="item-text ">
+                                <div class="row no-gutter">
+                                    <div class="col-40">
+                                        {{@global.LANGUAGE.ASSET_STATUS_MSG15}}
+                                    </div>
+                                    <div class="col-60 position_temperature color-black">
+                                        {{Temperature}}
+                                    </div> 
+                                </div>                                
+                            </div>                                          
+                        </div>
+                    </li>
+                {{/if}}     
+                {{#if Direction}}                    
+                    <li class="item-content">
+                        <div class="item-media"></div>
+                        <div class="item-inner">                        
+                            <div class="item-text ">
+                                <div class="row no-gutter">
+                                    <div class="col-40">
+                                        {{@global.LANGUAGE.ASSET_STATUS_MSG01}}
+                                    </div>
+                                    <div class="col-60 color-black position_direction">
+                                        {{Direction}}
+                                    </div> 
+                                </div>                                
+                            </div>                                          
+                        </div>
+                    </li>
+                {{/if}}    
+                {{#if Power}}                    
+                    <li class="item-content">
+                        <div class="item-media"></div>
+                        <div class="item-inner">                        
+                            <div class="item-text ">
+                                <div class="row no-gutter">
+                                    <div class="col-40">
+                                        {{@global.LANGUAGE.ASSET_STATUS_MSG21}}
+                                    </div>
+                                    <div class="col-60 position_power color-black">
+                                        {{Power}}
+                                    </div> 
+                                </div>                                
+                            </div>                                          
+                        </div>
+                    </li>
+                {{/if}}   
+                {{#if EngineHours}}                    
+                    <li class="item-content">
+                        <div class="item-media"></div>
+                        <div class="item-inner">                        
+                            <div class="item-text ">
+                                <div class="row no-gutter">
+                                    <div class="col-40">
+                                        {{@global.LANGUAGE.ASSET_STATUS_MSG38}}
+                                    </div>
+                                    <div class="col-60 position_engineHours color-black">
+                                        {{EngineHours}}
+                                    </div> 
+                                </div>                                
+                            </div>                                          
+                        </div>
+                    </li>
+                {{/if}}   
+                {{#if StoppedDuration}}                    
+                    <li class="item-content">
+                        <div class="item-media"></div>
+                        <div class="item-inner">                        
+                            <div class="item-text ">
+                                <div class="row no-gutter">
+                                    <div class="col-40">
+                                        {{@global.LANGUAGE.ASSET_STATUS_MSG39}}
+                                    </div>
+                                    <div class="col-60 position_stoppedDuration color-black">
+                                        {{StoppedDuration}}
+                                    </div> 
+                                </div>                                
+                            </div>                                          
+                        </div>
+                    </li>
+                {{/if}}    
+            </ul>                
+        </div>
+    	
+
+    	
+
+    </div>
+</div>
