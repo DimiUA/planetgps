@@ -541,14 +541,14 @@ Protocol = {
                         }
 
                         if(asset.haveFeature("Charging")){
-	                        ret.power = {};
-	                        if((asset.posInfo.status & 8 ) > 0){    //power connected
-	                            ret.power.value = LANGUAGE.ASSET_STATUS_MSG22;
-	                        }
-	                        else{   //power disconnected
-	                            ret.power.value = LANGUAGE.ASSET_STATUS_MSG23;
-	                        }
-	                    }
+                            ret.power = {};
+                            if((asset.posInfo.status & 8 ) > 0){    //power connected
+                                ret.power.value = LANGUAGE.ASSET_STATUS_MSG22;
+                            }
+                            else{   //power disconnected
+                                ret.power.value = LANGUAGE.ASSET_STATUS_MSG23;
+                            }
+                        }
                     }
                     if(asset.haveFeature("Acc2")){
                         ret.acc2 = {};

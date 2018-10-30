@@ -1,19 +1,19 @@
 @charset "UTF-8";
 
 @font-face {
-  font-family: "quiktrak";
-  src:url("fonts/quiktrak.eot");
-  src:url("fonts/quiktrak.eot?#iefix") format("embedded-opentype"),
-    url("fonts/quiktrak.woff") format("woff"),
-    url("fonts/quiktrak.ttf") format("truetype"),
-    url("fonts/quiktrak.svg#quiktrak") format("svg");
+  font-family: "quiktrak-ios";
+  src:url("fonts/quiktrak-ios.eot");
+  src:url("fonts/quiktrak-ios.eot?#iefix") format("embedded-opentype"),
+    url("fonts/quiktrak-ios.woff") format("woff"),
+    url("fonts/quiktrak-ios.ttf") format("truetype"),
+    url("fonts/quiktrak-ios.svg#quiktrak-ios") format("svg");
   font-weight: normal;
   font-style: normal;
 
 }
 
 [data-icon]:before {
-  font-family: "quiktrak" !important;
+  font-family: "quiktrak-ios" !important;
   content: attr(data-icon);
   font-style: normal !important;
   font-weight: normal !important;
@@ -27,7 +27,7 @@
 
 [class^="icon-"]:before,
 [class*=" icon-"]:before {
-  font-family: "quiktrak" !important;
+  font-family: "quiktrak-ios" !important;
   font-style: normal !important;
   font-weight: normal !important;
   font-variant: normal !important;
@@ -38,6 +38,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-menu-support:before {
+  content: "\56";
+}
 .icon-data-acc:before {
   content: "\61";
 }
@@ -59,25 +62,25 @@
 .icon-data-speed:before {
   content: "\67";
 }
-.icon-data-status:before {
+.icon-data-temperature:before {
   content: "\68";
 }
-.icon-data-temperature:before {
+.icon-data-voltag:before {
   content: "\69";
 }
-.icon-data-voltage:before {
+.icon-header-add:before {
   content: "\6a";
 }
-.icon-header-add:before {
+.icon-header-alarm:before {
   content: "\6b";
 }
-.icon-header-alarm:before {
+.icon-header-alarm2:before {
   content: "\6c";
 }
-.icon-header-alarm2:before {
+.icon-header-apply:before {
   content: "\6d";
 }
-.icon-header-apply:before {
+.icon-header-arrow-back-2:before {
   content: "\6e";
 }
 .icon-header-arrow-back:before {
@@ -98,69 +101,90 @@
 .icon-header-play:before {
   content: "\74";
 }
-.icon-header-search:before {
+.icon-header-playback:before {
   content: "\75";
 }
-.icon-header-stop:before {
+.icon-header-search:before {
   content: "\76";
 }
-.icon-header-track:before {
+.icon-header-stop:before {
   content: "\77";
 }
-.icon-menu-geofence:before {
+.icon-header-update:before {
   content: "\78";
 }
-.icon-menu-home:before {
+.icon-menu-geofence:before {
   content: "\79";
 }
-.icon-menu-logout:before {
+.icon-menu-home:before {
   content: "\7a";
 }
-.icon-menu-profile:before {
+.icon-menu-logout:before {
   content: "\41";
 }
-.icon-other-acc:before {
+.icon-menu-profile:before {
   content: "\42";
 }
-.icon-other-active:before {
+.icon-other-acc:before {
   content: "\43";
 }
-.icon-other-data:before {
+.icon-other-active:before {
   content: "\44";
 }
-.icon-other-distance:before {
+.icon-other-arrow:before {
   content: "\45";
 }
-.icon-other-edit:before {
+.icon-other-arrow-drop-down:before {
   content: "\46";
 }
-.icon-other-menu-geofence:before {
+.icon-other-asset:before {
   content: "\47";
 }
-.icon-other-pin-map:before {
+.icon-other-data:before {
   content: "\48";
 }
-.icon-other-position:before {
+.icon-other-direction:before {
   content: "\49";
 }
-.icon-other-remove:before {
+.icon-other-distance:before {
   content: "\4a";
 }
-.icon-other-satellite:before {
+.icon-other-edit:before {
   content: "\4b";
 }
-.icon-other-signal:before {
+.icon-other-imei:before {
   content: "\4c";
 }
-.icon-other-speed:before {
+.icon-other-menu:before {
   content: "\4d";
 }
-.icon-other-ping:before {
+.icon-other-menu-geofence:before {
   content: "\4e";
 }
-.icon-settings-password:before {
+.icon-other-pin-map:before {
   content: "\4f";
 }
-.icon-settings-profile:before {
+.icon-other-ping:before {
   content: "\50";
+}
+.icon-other-position:before {
+  content: "\51";
+}
+.icon-other-remove:before {
+  content: "\52";
+}
+.icon-other-satellite:before {
+  content: "\53";
+}
+.icon-other-signal:before {
+  content: "\54";
+}
+.icon-other-speed:before {
+  content: "\55";
+}
+.icon-settings-password:before {
+  content: "\57";
+}
+.icon-settings-user:before {
+  content: "\58";
 }
