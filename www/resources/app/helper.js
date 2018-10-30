@@ -116,6 +116,10 @@ Protocol = {
         "Speed":8,
         "Voltage":512
     },
+    StatusNewEnum:{
+        "Geolock" : 1,
+        "Immobilise": 2,
+    },
     Helper: {
         getSpeedValue: function (speedUnit, speed) {
             var ret = 0;
@@ -197,6 +201,16 @@ Protocol = {
             }
             return ret;
         },
+        getMileage: function(asset, mileage){
+            var ret = 0;
+            ret = (Protocol.Helper.getMileageValue(asset.Unit, mileage) + parseInt(asset.InitMileage) + parseInt(asset._FIELD_FLOAT7)) + '&nbsp;' + Protocol.Helper.getMileageUnit(asset.Unit);     
+            return ret;
+        },
+        getEngineHours: function(asset, launchHours){
+            var ret = 0;
+            ret = TimeSpan(parseInt(launchHours)*1000 + parseInt(asset.InitAcconHours)*60*60*1000 + parseInt(asset._FIELD_FLOAT8)*1000).format("^hh:mm:ss");  
+            return ret;
+        },
         getDirectionCardinal: function(direction){
             var ret = "";
             direction = parseFloat(direction);
@@ -268,6 +282,21 @@ Protocol = {
 
                 ret = date2_ms - date1_ms;
             }
+            return ret;
+        },
+        getGeoImmobState: function(val){            
+            var ret = {
+                Geolock : false,
+                Immobilise : false
+            };
+            if (val) {
+                if ((parseInt(val) & 1) > 0) {        
+                    ret.Geolock = true; 
+                }
+                if ((parseInt(val) & 2) > 0) {        
+                    ret.Immobilise = true; 
+                }
+            }            
             return ret;
         },
         getAddressByGeocoder: function(latlng,replyFunc){
@@ -391,7 +420,24 @@ Protocol = {
 
             return map;
         },
-       
+        toDegreesMinutesAndSeconds: function (coordinate) {
+            var absolute = Math.abs(coordinate);
+            var degrees = Math.floor(absolute);
+            var minutesNotTruncated = (absolute - degrees) * 60;
+            var minutes = Math.floor(minutesNotTruncated);
+            var seconds = Math.floor((minutesNotTruncated - minutes) * 60);
+
+            return degrees + " " + minutes + " " + seconds;
+        },
+        convertDMS: function (lat, lng) {
+            var latitude = Protocol.Helper.toDegreesMinutesAndSeconds(lat);
+            var latitudeCardinal = Math.sign(lat) >= 0 ? "N" : "S";
+
+            var longitude = Protocol.Helper.toDegreesMinutesAndSeconds(lng);
+            var longitudeCardinal = Math.sign(lng) >= 0 ? "E" : "W";
+
+            return latitude + " " + latitudeCardinal + "\n" + longitude + " " + longitudeCardinal;
+        },
         getAssetStateInfo: function(asset){
             /*
                 state-0  -- gray
@@ -627,6 +673,25 @@ Protocol = {
                         ret.GPS.state = 'state-1';
                     }
                     
+                    ret.geolock = {
+                        value: false,
+                        state: 'state-0',
+                    };
+                    ret.immob = {
+                        value: false,
+                        state: 'state-0',
+                    };
+                    if (asset.StatusNew) {                       
+                        var geolockImmobSate = Protocol.Helper.getGeoImmobState(asset.StatusNew);
+                        if (geolockImmobSate.Geolock) {
+                            ret.geolock.value = geolockImmobSate.Geolock;
+                            ret.geolock.state = 'state-1';
+                        }
+                        if (geolockImmobSate.Immobilise) {
+                            ret.immob.value = geolockImmobSate.Immobilise;
+                            ret.immob.state = 'state-3'; 
+                        }
+                    }                
                 }  
             }
                 
@@ -688,7 +753,9 @@ Protocol.Common = JClass({
         this._FIELD_FLOAT2 = arg._FIELD_FLOAT2;
         this._FIELD_FLOAT7 = arg._FIELD_FLOAT7;
         this.AlarmOptions = arg.AlarmOptions;
-        this._FIELD_FLOAT8 = arg._FIELD_FLOAT8;    
+        this._FIELD_FLOAT8 = arg._FIELD_FLOAT8;
+        this.StatusNew = arg.StatusNew;    
+        this._FIELD_INT2 = arg._FIELD_INT2;   
                
     
     },

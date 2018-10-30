@@ -107,60 +107,99 @@
 .icon-header-track:before {
   content: "\77";
 }
-.icon-menu-geofence:before {
+.icon-menu-alarms:before {
   content: "\78";
 }
-.icon-menu-home:before {
+.icon-menu-geofence:before {
   content: "\79";
 }
-.icon-menu-logout:before {
+.icon-menu-home:before {
   content: "\7a";
 }
-.icon-menu-profile:before {
+.icon-menu-logout:before {
   content: "\41";
 }
-.icon-other-acc:before {
+.icon-menu-profile:before {
   content: "\42";
 }
-.icon-other-active:before {
+.icon-menu-support:before {
   content: "\43";
 }
-.icon-other-data:before {
+.icon-other-acc:before {
   content: "\44";
 }
-.icon-other-distance:before {
+.icon-other-active:before {
   content: "\45";
 }
-.icon-other-edit:before {
+.icon-other-data:before {
   content: "\46";
 }
-.icon-other-menu-geofence:before {
+.icon-other-distance:before {
   content: "\47";
 }
-.icon-other-pin-map:before {
+.icon-other-edit:before {
   content: "\48";
 }
-.icon-other-position:before {
-  content: "\49";
-}
-.icon-other-remove:before {
+.icon-other-pin-map:before {
   content: "\4a";
 }
-.icon-other-satellite:before {
+.icon-other-position:before {
   content: "\4b";
 }
-.icon-other-signal:before {
+.icon-other-remove:before {
   content: "\4c";
 }
-.icon-other-speed:before {
+.icon-other-satellite:before {
   content: "\4d";
 }
-.icon-other-ping:before {
+.icon-other-signal:before {
   content: "\4e";
 }
-.icon-settings-password:before {
+.icon-other-speed:before {
   content: "\4f";
 }
-.icon-settings-profile:before {
+.icon-password-eye:before {
   content: "\50";
+}
+.icon-ping1:before {
+  content: "\51";
+}
+.icon-settings-password:before {
+  content: "\52";
+}
+.icon-settings-profile:before {
+  content: "\53";
+}
+.icon-stopped-time:before {
+  content: "\54";
+}
+.icon-engine-hours:before {
+  content: "\55";
+}
+.icon-other-geolock:before {
+  content: "\56";
+}
+.icon-other-input:before {
+  content: "\58";
+}
+.icon-other-menu-geofence:before {
+  content: "\57";
+}
+.icon-other-lock:before {
+  content: "\59";
+}
+.icon-other-satellite-1:before {
+  content: "\49";
+}
+.icon-other-signal-1:before {
+  content: "\5a";
+}
+.icon-menu-recharge:before {
+  content: "\30";
+}
+.icon-other-route:before {
+  content: "\31";
+}
+.icon-other-hearth:before {
+  content: "\32";
 }

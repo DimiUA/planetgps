@@ -1,4 +1,4 @@
-<div class="page no-swipeback bg-color-page track_page" data-page="asset.location">
+<div class="page no-swipeback bg-color-page track_page location_page" data-page="asset.location">
 	<div class="navbar  ">
         <div class="navbar-inner">
             <div class="left">
@@ -14,6 +14,16 @@
     <div class="page-content">
 
     	<div class="position_map "> 
+            <div class="float_button_wrapper route_button_wrapper ">
+                <div class="float_additional_wrapper">                   
+                    <div class="float_button_content bg-dealer">
+                        <a href="#" class="link external color-white routeButton" data-lat="{{Lat}}" data-lng="{{Lng}}">
+                            <i class="f7-icons icon-other-route color-white"></i>
+                            <span>{{@global.LANGUAGE.ASSET_TRACK_MSG05}}</span>                 
+                        </a>                    
+                    </div>                     
+                </div>                                     
+            </div>
             <div class="float_button_wrapper pano_button_wrapper">
                 <div class="float_button_content pano_button" data-lat="{{Lat}}" data-lng="{{Lng}}">
                     <i class="pano_preview_img"></i>   

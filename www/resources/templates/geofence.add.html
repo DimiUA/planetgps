@@ -46,7 +46,7 @@
                                 <div class="item-input select_input">
                                     <select name="assets" multiple>
                                         {{#each Assets}}             
-                                            <option value="{{Id}}" {{#if Selected}} selected {{/if}}>{{Name}}</option> 
+                                            <option value="{{Id}}" data-imei="{{IMEI}}" {{#if Selected}} selected {{/if}}>{{Name}}</option> 
                                         {{/each}}                                        
                                     </select>
                                 </div>

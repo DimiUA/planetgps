@@ -1,4 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
+<!-- 
+android com.planetgps.app
+iOS com.sinopacific.planetgps
+ -->
 <widget xmlns:cdv="http://cordova.apache.org/ns/1.0" id="com.planetgps.app" version="1.1.4" xmlns="http://www.w3.org/ns/widgets" defaultlocale="en-US" android-versionCode="30" ios-CFBundleVersion="30">
     <name>PlanetGPS</name>
     <description>
@@ -44,10 +48,7 @@
       <resource-file src="GoogleService-Info.plist" />
     </platform>
 
-<!-- 
-android com.planetgps.app
-iOS com.sinopacific.planetgps
- -->
+
     
     <!-- <plugin name="cordova-plugin-console" source="npm" spec="1.0.7" /> -->
     <plugin name="cordova-plugin-device" source="npm" spec="2.0.2" />

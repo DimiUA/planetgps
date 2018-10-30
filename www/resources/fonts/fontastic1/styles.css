@@ -158,3 +158,9 @@
 .icon-other-ping:before {
   content: "\4e";
 }
+.icon-settings-password:before {
+  content: "\4f";
+}
+.icon-settings-profile:before {
+  content: "\50";
+}
