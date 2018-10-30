@@ -34,7 +34,7 @@ function getPlusInfo(){
             localStorage.PUSH_DEVICE_TOKEN = uid;
             //localStorage.PUSH_DEVICE_TOKEN = "75ba1639-92ae-0c4c-d423-4fad1e48a49d"
         localStorage.PUSH_APPID_ID = 'webapp';
-        localStorage.DEVICE_TYPE = "web";        
+        localStorage.DEVICE_TYPE = "webapp";        
     }
 }
 
@@ -2421,10 +2421,10 @@ function login(){
     //hideKeyboard();
     
     //App.showPreloader();
-    var mobileToken = !localStorage.PUSH_MOBILE_TOKEN? '123' : localStorage.PUSH_MOBILE_TOKEN;
-    var appKey = !localStorage.PUSH_APP_KEY? '4SSm4aQPNj6uI5NlWmGsGA' : localStorage.PUSH_APP_KEY;
-    var deviceToken = !localStorage.PUSH_DEVICE_TOKEN? '123' : localStorage.PUSH_DEVICE_TOKEN;
-    var deviceType = !localStorage.DEVICE_TYPE? 'android' : localStorage.DEVICE_TYPE;
+    var mobileToken = !localStorage.PUSH_MOBILE_TOKEN? '111' : localStorage.PUSH_MOBILE_TOKEN;
+    var appKey = !localStorage.PUSH_APP_KEY? '111' : localStorage.PUSH_APP_KEY;
+    var deviceToken = !localStorage.PUSH_DEVICE_TOKEN? '111' : localStorage.PUSH_DEVICE_TOKEN;
+    var deviceType = !localStorage.DEVICE_TYPE? 'webapp' : localStorage.DEVICE_TYPE;
     var account = $$("input[name='account']");
     var password = $$("input[name='password']"); 
     //console.log(account.val()+' '+password.val());
@@ -3345,8 +3345,10 @@ function getMarkerDataTable(asset, positionDetails){
     //console.log(asset);
     var markerData = '';
     var customAddress = LANGUAGE.COM_MSG08;
+    var deirectionCardinal = '';
     if (asset && positionDetails) {
         customAddress = !positionDetails.customAddress ? LANGUAGE.COM_MSG08 : positionDetails.customAddress;
+        deirectionCardinal = Protocol.Helper.getDirectionCardinal(positionDetails.direct);
         markerData += '<table cellpadding="0" cellspacing="0" border="0" class="marker-data-table">';
         markerData +=   '<tr>';
         markerData +=       '<td class="marker-data-caption">'+LANGUAGE.ASSET_TRACK_MSG06+'</td>';
@@ -3374,7 +3376,7 @@ function getMarkerDataTable(asset, positionDetails){
         markerData +=   '</tr>';                            
         markerData +=   '<tr>';
         markerData +=       '<td class="marker-data-caption">'+LANGUAGE.ASSET_TRACK_MSG01+'</td>';
-        markerData +=       '<td class="marker-data-value">'+positionDetails.direction+'</td>';
+        markerData +=       '<td class="marker-data-value">'+deirectionCardinal+' ('+positionDetails.direct+'&deg;)</td>';
         markerData +=   '</tr>';                           
         markerData +=   '<tr>';
         markerData +=       '<td class="marker-data-caption">GPS</td>';
@@ -3389,9 +3391,9 @@ function getMarkerDataTable(asset, positionDetails){
         var assetFeaturesStatus = Protocol.Helper.getAssetStateInfo(asset);        
         if (assetFeaturesStatus && assetFeaturesStatus.stats) {
             var speed = 0;
-            var mileage = '-';
-            var deirectionCardinal = Protocol.Helper.getDirectionCardinal(asset.posInfo.direct);
+            var mileage = '-';            
             var positionType = Protocol.Helper.getPositionType(parseInt(asset.posInfo.positionType));
+            deirectionCardinal = Protocol.Helper.getDirectionCardinal(asset.posInfo.direct);
             if (typeof asset.Unit !== "undefined" && typeof asset.posInfo.speed !== "undefined") {
                 speed = Protocol.Helper.getSpeedValue(asset.Unit, asset.posInfo.speed) + ' ' + Protocol.Helper.getSpeedUnit(asset.Unit);
             }        
@@ -4558,10 +4560,10 @@ function getNewData(){
     getPlusInfo();
     //hideKeyboard();    
     
-    var mobileToken = !localStorage.PUSH_MOBILE_TOKEN? '123' : localStorage.PUSH_MOBILE_TOKEN;
-    var appKey = !localStorage.PUSH_APP_KEY? '4SSm4aQPNj6uI5NlWmGsGA' : localStorage.PUSH_APP_KEY;
-    var deviceToken = !localStorage.PUSH_DEVICE_TOKEN? '123' : localStorage.PUSH_DEVICE_TOKEN;
-    var deviceType = !localStorage.DEVICE_TYPE? 'android' : localStorage.DEVICE_TYPE;
+    var mobileToken = !localStorage.PUSH_MOBILE_TOKEN? '111' : localStorage.PUSH_MOBILE_TOKEN;
+    var appKey = !localStorage.PUSH_APP_KEY? '111' : localStorage.PUSH_APP_KEY;
+    var deviceToken = !localStorage.PUSH_DEVICE_TOKEN? '111' : localStorage.PUSH_DEVICE_TOKEN;
+    var deviceType = !localStorage.DEVICE_TYPE? 'webapp' : localStorage.DEVICE_TYPE;
    
    // alert('logged in');
     
