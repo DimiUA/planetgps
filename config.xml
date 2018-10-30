@@ -2,7 +2,7 @@
 <!-- 
 android com.planetgps.app
 iOS com.sinopacific.planetgps
- -->
+ --> 
 <widget xmlns:cdv="http://cordova.apache.org/ns/1.0" id="com.sinopacific.planetgps" version="1.1.4" xmlns="http://www.w3.org/ns/widgets" defaultlocale="en-US" android-versionCode="45" ios-CFBundleVersion="45">
     <name>PlanetGPS</name>
     <description>
