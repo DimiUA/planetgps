@@ -40,5 +40,45 @@
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "cordova-plugin-device": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-device@2.0.2"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-buildinfo": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-buildinfo@2.0.2"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-splashscreen": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-splashscreen@5.0.2"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-camera": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-camera@4.0.3"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-launch-review": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-launch-review@3.1.1"
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }
