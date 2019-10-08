@@ -1,7 +1,22 @@
+var storage;
+var fail;
+var uid;
+try {
+    uid = new Date;
+    (storage = window.localStorage).setItem(uid, uid);
+    fail = storage.getItem(uid) != uid;
+    storage.removeItem(uid);
+    fail && (storage = false);
+} catch (exception) {
+    window.localStorage.clear();
+}
+
 $hub = null;
 window.NULL = null;
 window.COM_TIMEFORMAT = 'YYYY-MM-DD HH:mm:ss';
 window.COM_TIMEFORMAT2 = 'YYYY-MM-DDTHH:mm:ss';
+window.COM_TIMEFORMAT3 = 'YYYY-MM-DDTHH:MM';
+UTCOFFSET = moment().utcOffset();
 function setUserinfo(user){localStorage.setItem("COM.QUIKTRAK.LIVE.USERINFO", JSON.stringify(user));}
 function getUserinfo(){var ret = {};var str = localStorage.getItem("COM.QUIKTRAK.LIVE.USERINFO");if(str) {ret = JSON.parse(str);} return ret;}
 function isJsonString(str){try{var ret=JSON.parse(str);}catch(e){return false;}return ret;}
@@ -43,7 +58,7 @@ var notificationChecked = 0;
 var loginTimer = 0;
 localStorage.loginDone = 0;
 //var appPaused = 0;
-
+var push = null;
 var loginInterval = null;
 var pushConfigRetryMax = 40;
 var pushConfigRetry = 0;
@@ -88,7 +103,7 @@ function onDeviceReady(){
 }
 
 function setupPush(){
-        var push = PushNotification.init({
+        push = PushNotification.init({
             "android": {
                 //"senderID": "264121929701"                             
             },
@@ -261,11 +276,13 @@ var prevStatusLatLng = {
 };
 
 var geofenceMarkerGroup = false;
+var AllMarkersGroup = false;
+var GeofenceFiguresGroup = new L.FeatureGroup();
 
-var API_DOMIAN1 = "http://api.m2mglobaltech.com/QuikTrak/V1/";
+var API_DOMIAN1 = "https://api.m2mglobaltech.com/QuikTrak/V1/";
 var API_DOMIAN2 = "";
-var API_DOMIAN3 = "http://api.m2mglobaltech.com/QuikProtect/V1/";
-var API_DOMIAN4 = "http://api.m2mglobaltech.com/Quikloc8/V1/";
+var API_DOMIAN3 = "https://api.m2mglobaltech.com/QuikProtect/V1/";
+var API_DOMIAN4 = "https://api.m2mglobaltech.com/Quikloc8/V1/";
 var API_URL = {};
 API_URL.URL_GET_LOGIN = API_DOMIAN1 + "User/Auth?username={0}&password={1}&appKey={2}&mobileToken={3}&deviceToken={4}&deviceType={5}";
 API_URL.URL_GET_LOGOUT = API_DOMIAN1 + "User/Logoff2?mobileToken={0}&deviceToken={1}";
@@ -293,8 +310,8 @@ API_URL.URL_GET_GEOFENCE_LIST = API_DOMIAN1 + "Device/GetFenceList";
 API_URL.URL_GEOFENCE_EDIT = API_DOMIAN1 + "Device/FenceEdit";
 API_URL.URL_GEOFENCE_DELETE = API_DOMIAN1 + "Device/FenceDelete";
 API_URL.URL_GET_GEOFENCE_ASSET_LIST = API_DOMIAN1 + "Device/GetFenceAssetList";
-API_URL.URL_PHOTO_UPLOAD = "http://upload.quiktrak.co/image/Upload";
-API_URL.URL_SUPPORT = "http://support.quiktrak.eu/?name={0}&loginName={1}&email={2}&phone={3}&s={4}";
+API_URL.URL_PHOTO_UPLOAD = "https://upload.quiktrak.co/image/Upload";
+API_URL.URL_SUPPORT = "https://support.quiktrak.eu/?name={0}&loginName={1}&email={2}&phone={3}&s={4}";
 
 API_URL.URL_GET_BALANCE = API_DOMIAN3 + "Client/Balance?MajorToken={0}&MinorToken={1}";
 API_URL.URL_SET_IMMOBILISATION = API_DOMIAN4 + "asset/Relay?MajorToken={0}&MinorToken={1}&code={2}&state={3}";
@@ -363,7 +380,7 @@ if (inBrowser) {
 
 
 
-var virtualAssetList = App.virtualList('.assets_list', {
+virtualAssetList = App.virtualList('.assets_list', {
     // search item by item
     searchAll: function (query, items) {
         var foundItems = [];        
@@ -580,6 +597,23 @@ $$('body').on('change keyup input click', '.only_numbers', function(){
     if (this.value.match(/[^0-9-]/g)) {
          this.value = this.value.replace(/[^0-9-]/g, '');
     }
+});
+
+
+$$('body').on('click', '.viewAllButton', function() {
+    event.preventDefault();
+
+    loadPageViewAll();
+
+    return false;
+});
+
+$$('body').on('click', '.settingsButton', function() {
+    event.preventDefault();
+
+    MapControls.showMapControlls(this);
+
+    return false;
 });
 
 $$('body').on('click', '.toggle-password', function(){
@@ -2197,6 +2231,30 @@ App.onPageBeforeRemove('asset.track', function(page){
     trackTimer = false;
 });
 
+App.onPageInit('asset.track.all', function(page) {
+    showMapAll();
+    var assetList = getAssetList();
+
+    $$('.refreshTrack').on('click', function() {
+        updateAssetsPosInfo();
+    });
+
+    trackTimer = setInterval(function() {
+        updateAllMarkers(assetList);
+    }, 10000);
+
+    initSettingsButton();
+});
+
+
+
+App.onPageBeforeRemove('asset.track.all', function(page) {
+    clearInterval(trackTimer);
+    trackTimer = false;
+    MapControls.isGeofencesShowed() ? MapControls.hideGeofences() : '';
+
+});
+
 App.onPageInit('asset.playback.show', function (page) {
     var rangeInput = $$(page.container).find('input[name="rangeInput"]');
     var rangeInputSpeed = $$(page.container).find('input[name="rangeInputSpeed"]');
@@ -2348,6 +2406,9 @@ function clearUserInfo(){
 	POSINFOASSETLIST = {}; 
     var alarmList = getAlarmList();    
     var pushList = getNotificationList();
+    var mapSettingsObg = getMapSettings();
+
+
     
     localStorage.clear(); 
     localStorage.loginDone = 0;
@@ -2367,6 +2428,10 @@ function clearUserInfo(){
         
     if (pushList) {
         localStorage.setItem("COM.QUIKTRAK.LIVE.NOTIFICATIONLIST.BW", JSON.stringify(pushList));
+    }
+
+    if (mapSettingsObg) {
+        localStorage.setItem("COM.QUIKTRAK.LIVE.MAPSETTINGS", JSON.stringify(mapSettingsObg));
     }
 
     if (deviceToken) {
@@ -2674,6 +2739,17 @@ function loadAlarmsAssetsPage(){
                 });
 }
 
+function loadPageViewAll() {
+
+    checkMapExisting();
+    mainView.router.load({
+        url: 'resources/templates/asset.track.all.html',
+        context: {
+
+        }
+    });
+}
+
 function loadPageSupport(){
     var userInfo = getUserinfo().User;  
 
@@ -2788,6 +2864,110 @@ function showStreetView(params){
     var panorama = new google.maps.StreetViewPanorama(document.getElementById('pano'),panoramaOptions);      
 }
 
+function getGeofenceDataTable(geofence, options){
+
+    //console.log(geofence);
+    var markerData = '';
+    if (geofence) {
+        let assignedAssets = '';
+        let assetList = getAssetList();
+        let assignedAssetsCount = '0';
+        let BeginTime = '';
+        let EndTime = '';
+        let IgnoreDays = '';
+
+        if (options && options.geogroup) {
+            if (geofence.Assets && geofence.Assets.length) {
+                assignedAssetsCount = geofence.Assets.length;
+                for (var i = geofence.Assets.length - 1; i >= 0; i--) {
+                    assignedAssets += geofence.Assets[i].Name + ', ';
+                }
+            }
+        }else{
+            if (geofence.SelectedAssetList && geofence.SelectedAssetList.length) {
+                assignedAssetsCount = geofence.SelectedAssetList.length;
+                for (var i = geofence.SelectedAssetList.length - 1; i >= 0; i--) {
+                    if (assetList[geofence.SelectedAssetList[i].IMEI]){
+                        assignedAssets += assetList[geofence.SelectedAssetList[i].IMEI].Name + ', ';
+                    }else{
+                        assignedAssets += LANGUAGE.COM_MSG27 + ', ';
+                    }
+                }
+            }
+        }
+        if (assignedAssets) {
+            assignedAssets = assignedAssets.slice(0, -2);
+        }else{
+            assignedAssets = LANGUAGE.COM_MSG58;
+        }
+
+        if (geofence.Week && geofence.Week.length) {
+            for (var i = 0; i < geofence.Week.length; i++) {
+                IgnoreDays += geofence.Week.length > 2 ? Protocol.DaysOfWeek[geofence.Week[i].Week].nameSmall + ', ' : Protocol.DaysOfWeek[geofence.Week[i].Week].name + ', ';
+            }
+            if (IgnoreDays) {
+                IgnoreDays = IgnoreDays.slice(0, -2);
+            }
+            BeginTime = geofence.Week[0].BeginTime ? moment(geofence.Week[0].BeginTime, 'HH:mm:ss').add(UTCOFFSET, 'minutes').format('HH:mm:ss') : BeginTime;
+            EndTime = geofence.Week[0].EndTime ? moment(geofence.Week[0].EndTime, 'HH:mm:ss').add(UTCOFFSET, 'minutes').format('HH:mm:ss') : EndTime;
+        }
+
+
+        markerData += `
+		<table cellpadding="0" cellspacing="0" border="0" class="marker-data-table">
+           	<tr>
+               <td class="marker-data-caption">${ options && options.geogroup ? LANGUAGE.GEOFENCE_MSG_34 : LANGUAGE.GEOFENCE_MSG_32}</td>
+               <td class="marker-data-value">${ geofence.Name }</td>
+           	</tr>
+           	<tr>
+            	<td class="marker-data-caption">${ LANGUAGE.GEOFENCE_MSG_33 }(${ assignedAssetsCount })</td>
+            	<td class="marker-data-value">${ assignedAssets }</td>
+        	</tr>			
+        	`;
+
+        if (options && !options.geogroup) {
+            markerData += `
+	        	<tr>
+	            	<td class="marker-data-caption">${ LANGUAGE.GEOFENCE_MSG_07 }</td>
+	            	<td class="marker-data-value">${ Protocol.Helper.getGeofenceAlertType(geofence.Alerts) }</td>
+	        	</tr>
+	           	<tr>
+	               <td class="marker-data-caption">${ LANGUAGE.COM_MSG37 }</td>
+	               <td class="marker-data-value">${ geofence.State == 1 ? LANGUAGE.COM_MSG59 : LANGUAGE.COM_MSG60 }</td>
+	           	</tr>
+	           	<tr>
+	               <td class="marker-data-caption">${ LANGUAGE.GEOFENCE_MSG_28 }</td>
+	               <td class="marker-data-value">${ geofence.Inverse == 1 ? LANGUAGE.COM_MSG59 : LANGUAGE.COM_MSG60 }</td>
+	           	</tr>
+           	`;
+            if (geofence.Inverse == 1) {
+                markerData += `
+					<tr>
+		               <td class="marker-data-caption">${ LANGUAGE.ASSET_TRACK_ALL_MSG021 }</td>
+		               <td class="marker-data-value">${ BeginTime } - ${ EndTime }</td>
+		           	</tr>
+		           	<tr>
+		               <td class="marker-data-caption">${ LANGUAGE.GEOFENCE_MSG_31 }</td>
+		               <td class="marker-data-value">${ IgnoreDays }</td>
+		           	</tr>
+           		`;
+            }
+        }
+
+        markerData += ` 
+        	<tr>
+            	<td class="marker-data-caption">${ LANGUAGE.ASSET_TRACK_ALL_MSG011 }</td>
+            	<td class="marker-data-value ">${ Protocol.Helper.convertDMS(geofence.Lat, geofence.Lng) }</td>
+        	</tr>
+			<tr>
+            	<td class="marker-data-caption">${ LANGUAGE.ASSET_TRACK_ALL_MSG012 }</td>
+            	<td class="marker-data-value address-${ geofence.Code }">${ geofence.Address }</td>
+        	</tr>
+       	</table>`;
+    }
+    return markerData;
+}
+
 function showMap(params){ 
    
     var asset = TargetAsset.ASSET_IMEI;   
@@ -2806,7 +2986,76 @@ function showMap(params){
     }
 }
 
+function showMapAll(params) {
 
+    var latlng = [0,0];
+
+    MapTrack = Protocol.Helper.createMap({ target: 'map', latLng: latlng, zoom: 15 });
+    //window.PosMarker[asset].addTo(MapTrack);
+    var assetList = getAssetList();
+    AllMarkersGroup = L.markerClusterGroup({'maxClusterRadius':35});
+    if (assetList) {
+        var point = '';
+        var markerData = '';
+        $.each(assetList, function(key, value){
+            point = '';
+            markerData = '';
+            if (POSINFOASSETLIST[key] && POSINFOASSETLIST[key].posInfo && parseFloat(POSINFOASSETLIST[key].posInfo.lat) !== 0 && parseFloat(POSINFOASSETLIST[key].posInfo.lng) !== 0) {
+                point = L.marker([POSINFOASSETLIST[key].posInfo.lat,POSINFOASSETLIST[key].posInfo.lng], {icon: Protocol.MarkerIcon[1]});
+                markerData = getMarkerDataTable(POSINFOASSETLIST[key]);
+                point
+                    .bindPopup(markerData,{maxWidth: 280, closeButton: false})
+                    .on('popupopen', function (e) {
+                        if (!POSINFOASSETLIST[key].posInfo.customAddress) {
+                            Protocol.Helper.getAddressByGeocoder({lat: POSINFOASSETLIST[key].posInfo.lat, lng: POSINFOASSETLIST[key].posInfo.lng},function(address){
+                                POSINFOASSETLIST[key].posInfo.customAddress = address;
+                                markerData = getMarkerDataTable(POSINFOASSETLIST[key]);
+                                e.target.setPopupContent(markerData);
+                                e.popup.update();
+                            });
+                        }
+                    });
+                /*if (app.device.desktop) {
+                    point.bindTooltip(POSINFOASSETLIST[key].Name,{permanent: false, direction: 'right'});
+                }*/
+                point._custom_asset_imei = key;
+                point.addTo(AllMarkersGroup);
+                POSINFOASSETLIST[key].markerId = AllMarkersGroup.getLayerId(point);
+            }
+        });
+        if (AllMarkersGroup.getBounds().isValid()) {
+            /*console.log(AllMarkersGroup.getBounds().isValid());*/
+            MapTrack.fitBounds(AllMarkersGroup.getBounds(),{padding:[16,16]});
+            AllMarkersGroup.addTo(MapTrack);
+        }
+    }
+}
+
+function updateAllMarkers(assetList){
+
+    $.each(assetList, function(key, value){
+        if (POSINFOASSETLIST[key] && POSINFOASSETLIST[key].posInfo && POSINFOASSETLIST[key].posInfo.lat !== 0 && POSINFOASSETLIST[key].posInfo.lng !== 0) {
+            var markerData = getMarkerDataTable(POSINFOASSETLIST[key]);
+            var point = AllMarkersGroup.getLayer(POSINFOASSETLIST[key].markerId);
+            if (point) {
+                point.setLatLng([POSINFOASSETLIST[key].posInfo.lat, POSINFOASSETLIST[key].posInfo.lng]).setPopupContent(markerData);
+                var popup = point.getPopup();
+                if (popup.isOpen()) {
+                    popup.update();
+                    Protocol.Helper.getAddressByGeocoder({lat: POSINFOASSETLIST[key].posInfo.lat, lng: POSINFOASSETLIST[key].posInfo.lng},function(address){
+                        POSINFOASSETLIST[key].posInfo.customAddress = address;
+                        if (popup.isOpen()) {
+                            markerData = getMarkerDataTable(POSINFOASSETLIST[key]);
+                            point.setPopupContent(markerData);
+                            popup.update();
+                        }
+                    });
+                }
+            }
+        }
+    });
+
+};
 
 function showMapPlayback(){
     var asset = TargetAsset.ASSET_IMEI;   
@@ -4885,7 +5134,19 @@ function showMsgNotification(arrMsgJ){
         }          
     }  
 }
-
+function setMapSettigns(list){
+    localStorage.setItem("COM.QUIKTRAK.LIVE.MAPSETTINGS", JSON.stringify(list));
+}
+function getMapSettings() {
+    var ret = null;
+    var str = localStorage.getItem("COM.QUIKTRAK.LIVE.MAPSETTINGS");
+    if(str) {
+        ret = JSON.parse(str);
+    }else{
+        ret = {};
+    }
+    return ret;
+}
 function setGeoFenceList(list){
     localStorage.setItem("COM.QUIKTRAK.LIVE.GEOFENCELIST", JSON.stringify(list));
 }
@@ -5053,6 +5314,229 @@ function formatArrAssetList(){
     return newAssetlist;   
 }
 
+function initSettingsButton() {
+
+    var userInfo = getUserinfo();
+
+    var data = {
+        MajorToken: userInfo.MajorToken,
+        MinorToken: userInfo.MinorToken
+    };
+
+    var container = $$('body');
+    if (container.children('.progressbar, .progressbar-infinite').length) return; //don't run all this if there is a current progressbar loading
+    App.showProgressbar(container);
+    //App.showPreloader();
+    $.ajax({
+        type: "POST",
+        url: API_URL.URL_GET_GEOFENCE_LIST,
+        data: data,
+        async: true,
+        crossDomain: true,
+        cache: false,
+        success: function(result) {
+            //App.hidePreloader();
+            App.hideProgressbar();
+            if (result.MajorCode == '000') {
+                var geofenceList = result.Data;
+                setGeoFenceList(geofenceList);
+
+                var mapSettingsObg = getMapSettings();
+                mapSettingsObg && mapSettingsObg.showGeofences ? MapControls.showGeofences() : '';
+            }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            //App.hidePreloader();
+            App.hideProgressbar();
+            App.alert(LANGUAGE.COM_MSG02);
+
+        }
+    });
+}
+
+var MapControls = {
+    data: {
+        Geofences: [],
+    },
+
+    isGeofencesShowed: function(){
+        return !!this.data.Geofences.length; //simplified this.data.Geofences.length ? true : false;
+    },
+    showGeofences: function(){
+        var self = this;
+        if (!self.isGeofencesShowed()) {
+            var geofenceList = getGeoFenceList();// app.methods.getFromStorage('geofenceList');
+            //var groupList = app.methods.getFromStorage('groupList');
+
+            if (!isObjEmpty(geofenceList) ) {
+                const keys = Object.keys(geofenceList);
+                for (const key of keys) {
+                    let geofenceDetails = {
+                        Name: geofenceList[key].Name,
+                        Code: geofenceList[key].Code,
+                    };
+                    /*let label = `${ LANGUAGE.GEOFENCE_MSG_32 }: ${geofenceList[key].Name} <br> ${ LANGUAGE.GEOFENCE_MSG_33 }: `;
+                    if (geofenceList[key].SelectedAssetList && geofenceList[key].SelectedAssetList.length) {
+                        label += geofenceList[key].SelectedAssetList.length;
+                    }else{
+                        label += '0';
+                    }*/
+                    let markerData = getGeofenceDataTable(geofenceList[key],{geogroup: false});
+                    if (geofenceList[key].GeoType == 1) { //circle
+                        if (geofenceList[key].Lat && geofenceList[key].Lng && geofenceList[key].Radius) {
+                            geofenceDetails.polygon = L.circle([geofenceList[key].Lat, geofenceList[key].Lng], {
+                                ...Protocol.PolygonCustomization,
+                                radius: geofenceList[key].Radius,
+                            }).bindPopup(markerData,{maxWidth: 280, closeButton: false})//.bindTooltip(label ,{permanent: false, direction: 'right'});
+                        }
+                    }else if (geofenceList[key].GeoPolygon) {
+                        var polygonCoordsArr = geofenceList[key].GeoPolygon.split('((').pop().split('))')[0].split(',');
+                        var geojsonArr = [];
+                        for (var i = polygonCoordsArr.length - 1; i >= 0; i--) {
+                            geojsonArr.push(polygonCoordsArr[i].split(' ').map(parseFloat).reverse());
+                        }
+                        geofenceDetails.polygon = L.polygon(geojsonArr, {
+                            ...Protocol.PolygonCustomization,
+                        }).bindPopup(markerData,{maxWidth: 280, closeButton: false}); //.bindTooltip(label ,{permanent: false, direction: 'right'});
+                    }
+
+                    if (geofenceDetails.polygon) {
+                        geofenceDetails.polygon.addTo(MapTrack);
+                        self.data.Geofences.push(geofenceDetails);
+                    }
+                }
+            }
+
+            /*if (groupList && groupList.length) {
+                for (var i = groupList.length - 1; i >= 0; i--) {
+                    if (groupList[i].Code != '000000') {
+                        let geofenceDetails = {
+                            Name: groupList[i].Name,
+                            Code: groupList[i].Code,
+                        };
+                        let label = `${ LANGUAGE.REPORT_PANEL_MSG54 }: ${groupList[i].Name} <br> ${ LANGUAGE.COM_MSG104 }: `;
+                        if (groupList[i].Assets && groupList[i].Assets.length) {
+                            label += groupList[i].Assets.length;
+                        }else{
+                            label += '0';
+                        }
+                        if (groupList[i].GeoType == 1) { //circle
+                            if (groupList[i].Lat && groupList[i].Lng && groupList[i].Radius) {
+                                geofenceDetails.polygon = L.circle([groupList[i].Lat, groupList[i].Lng], {
+                                    ...app.data.PolygonCustomization,
+                                    radius: groupList[i].Radius,
+                                }).bindTooltip(label,{permanent: false, direction: 'right'});
+                            }
+                        }else if (groupList[i].GeoPolygon) {
+                            var polygonCoordsArr = groupList[i].GeoPolygon.split('((').pop().split('))')[0].split(',');
+                            var geojsonArr = [];
+                            for (var y = polygonCoordsArr.length - 1; y >= 0; y--) {
+                                geojsonArr.push(polygonCoordsArr[y].split(' ').map(parseFloat).reverse());
+                            }
+                            geofenceDetails.polygon = L.polygon(geojsonArr, {
+                                ...app.data.PolygonCustomization,
+                            }).bindTooltip(label,{permanent: false, direction: 'right'});
+
+                        }
+                        if (geofenceDetails.polygon) {
+                            geofenceDetails.polygon.addTo(MapTrack);
+                            self.data.Geofences.push(geofenceDetails);
+                        }
+                    }
+                }
+            }*/
+        }
+    },
+    hideGeofences: function(){
+        var self = this;
+        if (self.data.Geofences && self.data.Geofences.length) {
+            for (var i = self.data.Geofences.length - 1; i >= 0; i--) {
+                if (self.data.Geofences[i].polygon) {
+                    MapTrack.removeLayer(self.data.Geofences[i].polygon);
+                }
+            }
+            self.data.Geofences.length = 0;
+        }
+    },
+    removeGeofence: function(code){
+        var self = this;
+        if (code && self.data.Geofences && self.data.Geofences.length) {
+            let index = self.data.Geofences.findIndex(el => el.Code == code);
+            if (index != -1) {
+                MapTrack.removeLayer(self.data.Geofences[index].polygon);
+            }
+        }
+    },
+
+
+    showMapControlls: function(target){
+        var self = this;
+        var mapSettingsObg = getMapSettings();
+
+        var buttons = [
+            {
+                text: `
+                <div class="action_button_wrapper">
+                    <div class="action_button_block action_button_media">
+                        <i class="f7-icons icon-menu-geofence"></i>
+                    </div>
+                    <div class="action_button_block action_button_text">
+                        ${ LANGUAGE.COM_MSG57 }
+                    </div>
+                    <span class="label-switch actionButton-label">
+                        <input type="checkbox" name="checkbox-map-settings" value="showGeofences" ${ mapSettingsObg && mapSettingsObg.showGeofences ? 'checked' : '' }/>
+                        <div class="checkbox"></div>
+                    </span>
+                </div>`,
+                /*text: `<input type="hidden" name="checkbox-map-settings" value="showGeofences" ${ mapSettingsObg && mapSettingsObg.showGeofences ? 'checked' : '' }/>
+                        ${ mapSettingsObg && mapSettingsObg.showGeofences ? LANGUAGE.COM_MSG57 : LANGUAGE.COM_MSG61 }`,*/
+                onClick: function(parent) {
+                    var input = $$(parent).find('input[name="checkbox-map-settings"]');
+                    var newState = !input.prop( "checked" );
+
+                    mapSettingsObg[input.val()] = newState;
+
+                    setMapSettigns(mapSettingsObg);
+                    newState ? MapControls.showGeofences() : MapControls.hideGeofences();
+
+                }
+
+            },
+
+        ];
+        App.actions(target, buttons);
+    },
+};
+
+function isObjEmpty(obj) {
+    // null and undefined are "empty"
+    if (obj == null) return true;
+    // Assume if it has a length property with a non-zero value
+    // that that property is correct.
+    if (obj.length > 0)    return false;
+    if (obj.length === 0)  return true;
+    // If it isn't an object at this point
+    // it is empty, but it can't be anything *but* empty
+    // Is it empty?  Depends on your application.
+    if (typeof obj !== "object") return true;
+    // Otherwise, does it have any properties of its own?
+    // Note that this doesn't handle
+    // toString and valueOf enumeration bugs in IE < 9
+    for (var key in obj) {
+        if (hasOwnProperty.call(obj, key)) return false;
+    }
+    return true;
+}
+
+function isClockwise(poly){
+    var sum = 0;
+    for (var i=0; i<poly.length-1; i++) {
+        var cur = poly[i],
+            next = poly[i+1];
+        sum += (next.lat - cur.lat) * (next.lng + cur.lng)
+    }
+    return sum > 0
+}
 
 /* ASSET EDIT PHOTO */
 

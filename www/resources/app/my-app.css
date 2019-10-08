@@ -979,6 +979,7 @@ html:not(.watch-active-state) .button.btn_login.button-fill:active{
 		min-height: 210px;
 		position: relative;
 	}
+
 	.position_map_playback{
 		height: calc(100% - 150px);
 		/* height: 100%; */
@@ -1057,8 +1058,12 @@ html:not(.watch-active-state) .button.btn_login.button-fill:active{
 				line-height: 1;
 				margin-top: 0;				
 			}
-			.routeButton{
+			.routeButton,
+			.viewAllButton{
 				line-height: 1;
+			}
+			.viewAllButton span{
+				margin-top: -4px;
 			}
 			.timer_current_value{
 				font-size: 18px;

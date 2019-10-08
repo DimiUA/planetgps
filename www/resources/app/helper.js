@@ -24,6 +24,11 @@ Protocol = {
             popupAnchor:  [0, -60] // point from which the popup should open relative to the iconAnchor
         })
     ],
+    PolygonCustomization:{
+        color: '#AA5959',
+        fillColor: '#FF0000',
+        fillOpacity: 0.25,
+    },
     PositionTypes: {
         "NONE": 0,
         "GPS": 1,
@@ -120,6 +125,43 @@ Protocol = {
         "Geolock" : 1,
         "Immobilise": 2,
     },
+    DaysOfWeek: [
+        {
+            val: 0,
+            name: LANGUAGE.GEOFENCE_MSG_20,
+            nameSmall: LANGUAGE.COM_MSG46,
+        },
+        {
+            val: 1,
+            name: LANGUAGE.GEOFENCE_MSG_21,
+            nameSmall: LANGUAGE.COM_MSG47,
+        },
+        {
+            val: 2,
+            name: LANGUAGE.GEOFENCE_MSG_22,
+            nameSmall: LANGUAGE.COM_MSG48,
+        },
+        {
+            val: 3,
+            name: LANGUAGE.GEOFENCE_MSG_23,
+            nameSmall: LANGUAGE.COM_MSG49,
+        },
+        {
+            val: 4,
+            name: LANGUAGE.GEOFENCE_MSG_24,
+            nameSmall: LANGUAGE.COM_MSG50,
+        },
+        {
+            val: 5,
+            name: LANGUAGE.GEOFENCE_MSG_25,
+            nameSmall: LANGUAGE.COM_MSG51,
+        },
+        {
+            val: 6,
+            name: LANGUAGE.GEOFENCE_MSG_26,
+            nameSmall: LANGUAGE.COM_MSG52,
+        },
+    ],
     Helper: {
         getSpeedValue: function (speedUnit, speed) {
             var ret = 0;
@@ -297,6 +339,23 @@ Protocol = {
                     ret.Immobilise = true; 
                 }
             }            
+            return ret;
+        },
+        getGeofenceAlertType: function(val){
+            var ret = '';
+            if (val) {
+                if ((parseInt(val) & 8) > 0) {
+                    ret += LANGUAGE.GEOFENCE_MSG_12 + ', ';
+                }
+                if ((parseInt(val) & 16) > 0) {
+                    ret += LANGUAGE.GEOFENCE_MSG_13 + ', ';
+                }
+            }
+            if (ret) {
+                ret = ret.slice(0, -2);
+            }else{
+                ret = LANGUAGE.COM_MSG58;
+            }
             return ret;
         },
         getAddressByGeocoder: function(latlng,replyFunc){

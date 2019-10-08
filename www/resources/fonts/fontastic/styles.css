@@ -65,9 +65,6 @@
 .icon-data-temperature:before {
   content: "\69";
 }
-.icon-data-voltage:before {
-  content: "\6a";
-}
 .icon-header-add:before {
   content: "\6b";
 }
@@ -202,4 +199,37 @@
 }
 .icon-other-hearth:before {
   content: "\32";
+}
+.icon-other-user-manual:before {
+  content: "\33";
+}
+.icon-other-call:before {
+  content: "\34";
+}
+.icon-other-sort:before {
+  content: "\36";
+}
+.icon-other-report-theft:before {
+  content: "\35";
+}
+.icon-other-door:before {
+  content: "\37";
+}
+.icon-data-voltage:before {
+  content: "\6a";
+}
+.icon-menu-reports:before {
+  content: "\38";
+}
+.icon-speedlimit:before {
+  content: "\39";
+}
+.icon-hint:before {
+  content: "\21";
+}
+.icon-show-assets:before {
+  content: "\22";
+}
+.icon-settings:before {
+  content: "\23";
 }
