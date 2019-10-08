@@ -2935,12 +2935,13 @@ function getGeofenceDataTable(geofence, options){
 	               <td class="marker-data-caption">${ LANGUAGE.COM_MSG37 }</td>
 	               <td class="marker-data-value">${ geofence.State == 1 ? LANGUAGE.COM_MSG59 : LANGUAGE.COM_MSG60 }</td>
 	           	</tr>
-	           	<tr>
-	               <td class="marker-data-caption">${ LANGUAGE.GEOFENCE_MSG_28 }</td>
-	               <td class="marker-data-value">${ geofence.Inverse == 1 ? LANGUAGE.COM_MSG59 : LANGUAGE.COM_MSG60 }</td>
-	           	</tr>
+	           	
            	`;
-            if (geofence.Inverse == 1) {
+        /*<tr>
+            <td class="marker-data-caption">${ LANGUAGE.GEOFENCE_MSG_28 }</td>
+                <td class="marker-data-value">${ geofence.Inverse == 1 ? LANGUAGE.COM_MSG59 : LANGUAGE.COM_MSG60 }</td>
+                </tr>*/
+            /*if (geofence.Inverse == 1) {
                 markerData += `
 					<tr>
 		               <td class="marker-data-caption">${ LANGUAGE.ASSET_TRACK_ALL_MSG021 }</td>
@@ -2951,7 +2952,7 @@ function getGeofenceDataTable(geofence, options){
 		               <td class="marker-data-value">${ IgnoreDays }</td>
 		           	</tr>
            		`;
-            }
+            }*/
         }
 
         markerData += ` 
