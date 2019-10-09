@@ -2090,6 +2090,7 @@ App.onPageInit('asset.location', function (page) {
     var lng = panoButton.data('lng');
     var latlng = new google.maps.LatLng(lat, lng);
     showMap({'lat':lat,'lng':lng});
+    initSettingsButton();
     StreetViewService.getPanorama({location:latlng, radius: 50}, processSVData);
 
     panoButton.on('click', function(){             
@@ -2100,10 +2101,14 @@ App.onPageInit('asset.location', function (page) {
         showStreetView(params);        
     });
 });
+App.onPageBeforeRemove('asset.location', function(page) {
+    MapControls.isGeofencesShowed() ? MapControls.hideGeofences() : '';
+});
 
 
 App.onPageInit('asset.track', function (page) {     
     showMap();
+    initSettingsButton();
 
     var posTime = $$(page.container).find('.position_time');
     //var posDir = $$(page.container).find('.position_direction');
@@ -2229,6 +2234,7 @@ App.onPageInit('asset.track', function (page) {
 App.onPageBeforeRemove('asset.track', function(page){
     clearInterval(trackTimer);    
     trackTimer = false;
+    MapControls.isGeofencesShowed() ? MapControls.hideGeofences() : '';
 });
 
 App.onPageInit('asset.track.all', function(page) {
