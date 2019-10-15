@@ -49,7 +49,7 @@ window.LanguagePackages= {
 		"COM_MSG51": "Fri",
 		"COM_MSG52": "Sat",
 
-		"COM_MSG55": "View All",
+		"COM_MSG55": "Show All Assets",
 		"COM_MSG56": "Settings",
 		"COM_MSG57": "Show Geofences",
 		"COM_MSG58": "None",
@@ -386,7 +386,7 @@ window.LanguagePackages= {
 		"COM_MSG51": "Fri",
 		"COM_MSG52": "Sat",
 
-		"COM_MSG55": "View All",
+		"COM_MSG55": "Show All Assets",
 		"COM_MSG56": "Settings",
 		"COM_MSG57": "Show Geofences",
 		"COM_MSG58": "None",
@@ -725,7 +725,7 @@ window.LanguagePackages= {
 		"COM_MSG51": "Fri",
 		"COM_MSG52": "Sat",
 
-		"COM_MSG55": "View All",
+		"COM_MSG55": "Show All Assets",
 		"COM_MSG56": "Settings",
 		"COM_MSG57": "Show Geofences",
 		"COM_MSG58": "None",
@@ -1066,7 +1066,7 @@ window.LanguagePackages= {
 		"COM_MSG51": "Fri",
 		"COM_MSG52": "Sat",
 
-		"COM_MSG55": "View All",
+		"COM_MSG55": "Show All Assets",
 		"COM_MSG56": "Settings",
 		"COM_MSG57": "Show Geofences",
 		"COM_MSG58": "None",

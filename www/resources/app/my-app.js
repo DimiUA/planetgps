@@ -395,12 +395,16 @@ virtualAssetList = App.virtualList('.assets_list', {
     items: [
     ],
     height: function (item) {
-        var asset = POSINFOASSETLIST[item.IMEI];        
-        var assetFeaturesStatus = Protocol.Helper.getAssetStateInfo(asset);        
-        var height = 109; 
-        //console.log(assetFeaturesStatus);
-        if (assetFeaturesStatus && assetFeaturesStatus.voltage && assetFeaturesStatus.fuel || assetFeaturesStatus && assetFeaturesStatus.battery && assetFeaturesStatus.fuel || assetFeaturesStatus && assetFeaturesStatus.battery && assetFeaturesStatus.voltage) {
-            height = 145;
+        var height = 109;
+        if (POSINFOASSETLIST && POSINFOASSETLIST[item.IMEI]){
+            var asset = POSINFOASSETLIST[item.IMEI];
+            var assetFeaturesStatus = Protocol.Helper.getAssetStateInfo(asset);
+            if (assetFeaturesStatus && assetFeaturesStatus.voltage && assetFeaturesStatus.fuel ||
+                assetFeaturesStatus && assetFeaturesStatus.battery && assetFeaturesStatus.fuel ||
+                assetFeaturesStatus && assetFeaturesStatus.battery && assetFeaturesStatus.voltage ||
+                assetFeaturesStatus && assetFeaturesStatus.acc && assetFeaturesStatus.voltage) {
+                height = 145;
+            }
         }
         return height; //display the image with 50px height
     },

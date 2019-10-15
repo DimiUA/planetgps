@@ -231,6 +231,41 @@ html:not(.watch-active-state) .button.btn_login.button-fill:active{
 .list-block	input[type=password]:-moz-placeholder 			{color: rgba(0,0,0,.2);}
 .list-block	input[type=password]:-ms-input-placeholder  	{color: rgba(0,0,0,.2);}
 
+.page-content.with-bottom-button {
+	padding-bottom: 68px;
+}
+
+.bottom-button-wrapper {
+	position: fixed;
+	z-index: 20;
+	bottom: 0;
+	top: auto;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+
+.bottom-button-content {
+	position: relative;
+	padding: 16px;
+	box-sizing: border-box;
+}
+.bottom-button-content:before{
+	content: '';
+	position: absolute;
+	left: 0;
+	bottom: auto;
+	right: auto;
+	top: 0;
+	height: 1px;
+	width: 100%;
+	background-color: rgba(0,0,0,.12);
+	display: block;
+	z-index: 15;
+	-webkit-transform-origin: 50% 100%;
+	transform-origin: 50% 100%;
+}
+
 .notification_header{
 	font-size: 20px;
 }
@@ -418,7 +453,11 @@ html:not(.watch-active-state) .button.btn_login.button-fill:active{
 .assets_list{
 	margin: 0;
 	/* margin-top: 14px; */
+
 }
+/*.with-bottom-button .assets_list{
+	padding-bottom: 68px;
+}*/
 	/* .assets_list.list-block ul:before,
 	.assets_list.list-block ul:after,
 	.assets_list.list-block .item-inner:after{
@@ -1058,8 +1097,9 @@ html:not(.watch-active-state) .button.btn_login.button-fill:active{
 				line-height: 1;
 				margin-top: 0;				
 			}
-			.routeButton,
-			.viewAllButton{
+			/*.routeButton,
+			.viewAllButton{*/
+			.routeButton{
 				line-height: 1;
 			}
 			.viewAllButton span{
