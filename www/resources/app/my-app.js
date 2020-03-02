@@ -314,7 +314,8 @@ API_URL.URL_PHOTO_UPLOAD = "https://upload.quiktrak.co/image/Upload";
 API_URL.URL_SUPPORT = "https://support.quiktrak.eu/?name={0}&loginName={1}&email={2}&phone={3}&s={4}";
 
 API_URL.URL_GET_BALANCE = API_DOMIAN3 + "Client/Balance?MajorToken={0}&MinorToken={1}";
-API_URL.URL_SET_IMMOBILISATION = API_DOMIAN4 + "asset/Relay?MajorToken={0}&MinorToken={1}&code={2}&state={3}";
+//API_URL.URL_SET_IMMOBILISATION = API_DOMIAN4 + "asset/Relay?MajorToken={0}&MinorToken={1}&code={2}&state={3}";
+API_URL.URL_SET_IMMOBILISATION = API_DOMIAN4 + "asset/RelayNoPay?MajorToken={0}&MinorToken={1}&code={2}&state={3}";
 API_URL.URL_SET_GEOLOCK = API_DOMIAN4 + "asset/GeoLock?MajorToken={0}&MinorToken={1}&code={2}&state={3}";
 
 API_URL.URL_ROUTE = "https://www.google.com/maps/dir/?api=1&destination={0},{1}"; //&travelmode=walking
@@ -395,15 +396,16 @@ virtualAssetList = App.virtualList('.assets_list', {
     items: [
     ],
     height: function (item) {
-        var height = 109;
+        var height = 92;
         if (POSINFOASSETLIST && POSINFOASSETLIST[item.IMEI]){
+            height = 128;
             var asset = POSINFOASSETLIST[item.IMEI];
             var assetFeaturesStatus = Protocol.Helper.getAssetStateInfo(asset);
             if (assetFeaturesStatus && assetFeaturesStatus.voltage && assetFeaturesStatus.fuel ||
                 assetFeaturesStatus && assetFeaturesStatus.battery && assetFeaturesStatus.fuel ||
                 assetFeaturesStatus && assetFeaturesStatus.battery && assetFeaturesStatus.voltage ||
                 assetFeaturesStatus && assetFeaturesStatus.acc && assetFeaturesStatus.voltage) {
-                height = 145;
+                height = 164;
             }
         }
         return height; //display the image with 50px height
@@ -427,15 +429,22 @@ virtualAssetList = App.virtualList('.assets_list', {
 	        	ret +=  '<li class="item-link item-content item_asset" data-imei="' + item.IMEI + '" data-id="' + item.Id + '">';                    
 	            ret +=      '<div class="item-media">'+assetImg+'</div>';
 	            ret +=      '<div class="item-inner">';
-	            ret +=          '<div class="item-title-row">';
+	            ret +=          '<div class="item-title-row item-title-asse-name">';
 	            ret +=              '<div class="item-title">' + item.Name + '</div>';
-	           	ret +=              '<div class="item-after">'; 
-	           	ret +=                  '<i id="geolock-state'+item.IMEI+'" class="f7-icons icon-other-geolock '+assetFeaturesStatus.geolock.state+' "></i>';               
+	           	ret +=              '<div class="item-after">';
                 ret +=                  '<i id="signal-state'+item.IMEI+'" class="f7-icons icon-other-signal '+assetFeaturesStatus.GSM.state+'"></i>';
                 ret +=                  '<i id="satellite-state'+item.IMEI+'" class="f7-icons icon-other-satellite '+assetFeaturesStatus.GPS.state+'"></i>';
                 ret +=              '</div>';
 	            ret +=          '</div>';
-	            ret +=          '<div id="status-state'+item.IMEI+'" class="item-subtitle '+assetFeaturesStatus.status.state+'"><i class="icon-status-fix icon-data-status"></i><span id="status-value'+item.IMEI+'">'+assetFeaturesStatus.status.value+'</span></div>';
+
+                ret +=          '<div class="item-title-row item-title-row-status">';
+                ret +=              '<div class="item-title item-subtitle '+assetFeaturesStatus.status.state+'"><i class="icon-status-fix icon-data-status"></i><span id="status-value'+item.IMEI+'">'+assetFeaturesStatus.status.value+'</span></div>';
+                ret +=              '<div class="item-after">';
+                ret +=                  '<i id="immob-state'+item.IMEI+'" class="f7-icons icon-other-lock '+assetFeaturesStatus.immob.state+' "></i>';
+                ret +=                  '<i id="geolock-state'+item.IMEI+'" class="f7-icons icon-other-geolock '+assetFeaturesStatus.geolock.state+' "></i>';
+                ret +=              '</div>';
+                ret +=          '</div>';
+
 	            ret +=          '<div class="item-text">';
 	            ret +=              '<div class="row no-gutter">';                            
 	                                if (assetFeaturesStatus.speed) {
@@ -492,11 +501,14 @@ virtualAssetList = App.virtualList('.assets_list', {
 	            ret +=  '<li class="item-link item-content item_asset" data-imei="' + item.IMEI + '" data-id="' + item.Id + '" title="No data">';                    
 	            ret +=      '<div class="item-media">'+assetImg+'</div>';
 	            ret +=      '<div class="item-inner">';
-	            ret +=          '<div class="item-title-row">';
+	            ret +=          '<div class="item-title-row item-title-asse-name">';
 	            ret +=              '<div class="item-title">' + item.Name + '</div>';
-	            ret +=                  '<div class="item-after"><i class="f7-icons icon-other-geolock  state-0"></i><i class="f7-icons icon-other-signal state-0"></i><i class="f7-icons icon-other-satellite state-0"></i></div>';
+	            ret +=              '<div class="item-after"><i class="f7-icons icon-other-signal state-0"></i><i class="f7-icons icon-other-satellite state-0"></i></div>';
 	            ret +=          '</div>';
-	            ret +=          '<div class="item-subtitle state-0"><i class="icon-status-fix icon-data-status"></i>'+LANGUAGE.COM_MSG11+'</div>';
+                ret +=          '<div class="item-title-row item-title-row-status">';
+                ret +=              '<div class="item-title item-subtitle state-0"><i class="icon-status-fix icon-data-status"></i>'+LANGUAGE.COM_MSG11+'</div>';
+                ret +=              '<div class="item-after"><i class="f7-icons icon-other-lock state-0"></i><i class="f7-icons icon-other-geolock state-0"></i></div>';
+                ret +=          '</div>';
 	            ret +=      '</div>';                   
 	            ret +=  '</li>';
 	        }
@@ -1001,18 +1013,18 @@ App.onPageInit('asset.status', function (page) {
     });
 
     var geolock = $$(page.container).find('input[name="Geolock"]');
-    //var immob = $$(page.container).find('input[name="Immobilise"]');
+    var immob = $$(page.container).find('input[name="Immobilise"]');
     geolock.on('change', function(){        
         changeGeolockImmobState({id: TargetAsset.ASSET_ID, imei: TargetAsset.ASSET_IMEI, state: this.checked, name: this.attributes.name.value});
     });
-    /*immob.on('change', function(){           
-        if (POSINFOASSETLIST[TargetAsset.ASSET_IMEI]._FIELD_INT2 != 0) { // check if asset support immobilise feature
+    immob.on('change', function(){
+        if ((parseInt(POSINFOASSETLIST[TargetAsset.ASSET_IMEI]._FIELD_INT2) & 1) > 0) { // check if asset support immobilise feature
             changeGeolockImmobState({id: TargetAsset.ASSET_ID, imei: TargetAsset.ASSET_IMEI, state: this.checked, name: this.attributes.name.value});
         } else{
             changeSwitcherState({state: !this.checked, name: this.attributes.name.value});       
             showCustomMessage({title: POSINFOASSETLIST[TargetAsset.ASSET_IMEI].Name, text: LANGUAGE.PROMPT_MSG033});
         }         
-    });*/
+    });
 });
 
 App.onPageInit('asset.edit', function (page) { 
@@ -2349,7 +2361,7 @@ App.onPageInit('asset.playback.show', function (page) {
         posMileage.html((Protocol.Helper.getMileageValue(asset.Unit, HistoryArray[value].mileage) + parseInt(asset.InitMileage) + parseInt(asset._FIELD_FLOAT7)) + '&nbsp;' + Protocol.Helper.getMileageUnit(asset.Unit)); 
         posSpeed.html(Protocol.Helper.getSpeedValue(asset.Unit, HistoryArray[value].speed) + ' ' + Protocol.Helper.getSpeedUnit(asset.Unit));
         MapTrack.setView([HistoryArray[value].lat, HistoryArray[value].lng]);   
-
+        cons
         var MarkerData = getMarkerDataTablePB(asset, HistoryArray[value]);
         window.PosMarker[TargetAsset.ASSET_IMEI].setPopupContent(MarkerData); 
 
@@ -3259,7 +3271,7 @@ function loadStatusPage(){
             engineHours: false,
             stoppedDuration: false,
             geolock: false,
-           // immob: false,            
+            immob: false,
 	    };
 
 	    
@@ -3294,9 +3306,9 @@ function loadStatusPage(){
         if (assetFeaturesStatus.geolock) {
             assetStats.geolock = assetFeaturesStatus.geolock.value;
         } 
-        /*if (assetFeaturesStatus.immob) {
+        if (assetFeaturesStatus.immob) {
             assetStats.immob = assetFeaturesStatus.immob.value;
-        } */
+        }
 
 
 	    mainView.router.load({
@@ -3317,7 +3329,7 @@ function loadStatusPage(){
                 Power: assetStats.power,
                 EngineHours: assetStats.engineHours,
                 StoppedDuration: assetStats.stoppedDuration,
-                //ImmobState: assetStats.immob,   
+                ImmobState: assetStats.immob,
                 GeolockState: assetStats.geolock,                
                 Coords: 'GPS: ' + Protocol.Helper.convertDMS(latlng.lat, latlng.lng),
 	        }
@@ -4429,11 +4441,11 @@ function updateAssetsListStats(){
             state.removeClass('state-0 state-1 state-2 state-3');  
             state.addClass(assetFeaturesStatus.geolock.state); 
         } 
-        /*if (assetFeaturesStatus.immob) {
+        if (assetFeaturesStatus.immob) {
             state = $$("#immob-state"+key);
             state.removeClass('state-0 state-1 state-2 state-3');  
             state.addClass(assetFeaturesStatus.immob.state); 
-        } */
+        }
         if (assetFeaturesStatus.status) {
             state = $$("#status-state"+key);
             state.removeClass('state-0 state-1 state-2 state-3');  
@@ -4531,7 +4543,7 @@ function updateAssetsListStats(){
 	                    stoppedDurationContainer.html('-');
                 	} 
 
-                	//statusPageContainer.find('.position_immob').removeClass('state-0 state-1 state-2 state-3').addClass(assetFeaturesStatus.immob.state);                
+                	statusPageContainer.find('.position_immob').removeClass('state-0 state-1 state-2 state-3').addClass(assetFeaturesStatus.immob.state);
                     statusPageContainer.find('.position_geolock').removeClass('state-0 state-1 state-2 state-3').addClass(assetFeaturesStatus.geolock.state);            
                     
                 }                

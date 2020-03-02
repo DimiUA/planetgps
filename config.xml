@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget 
-  version="1.1.5"
-  android-versionCode="47"
-  ios-CFBundleVersion="47"
+  version="1.1.6"
+  android-versionCode="48"
+  ios-CFBundleVersion="48"
   id="com.planetgps.app"
   xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:android="http://schemas.android.com/apk/res/android" defaultlocale="en-US" >
     <name>PlanetGPS</name>
