@@ -3,7 +3,7 @@
   version="1.1.7"
   android-versionCode="49"
   ios-CFBundleVersion="49"
-  id="com.planetgps.app"
+  id="com.sinopacific.planetgps"
   xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:android="http://schemas.android.com/apk/res/android" defaultlocale="en-US" >
 
   <!-- android  	com.planetgps.app -->
