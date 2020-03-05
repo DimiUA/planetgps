@@ -441,7 +441,9 @@ virtualAssetList = App.virtualList('.assets_list', {
             ret +=          '<div class="item-title-row item-title-row-status">';
             ret +=              '<div class="item-title item-subtitle '+assetFeaturesStatus.status.state+'"><i class="icon-status-fix icon-other-asset"></i><span id="status-value'+item.IMEI+'">'+assetFeaturesStatus.status.value+'</span></div>';
             ret +=              '<div class="item-after">';
-            ret +=                  '<i id="immob-state'+item.IMEI+'" class="icon-other-lock '+assetFeaturesStatus.immob.state+' "></i>';
+            if((parseInt(asset._FIELD_INT2) & 1) > 0) {
+                ret +=              '<i id="immob-state' + item.IMEI + '" class="icon-other-lock ' + assetFeaturesStatus.immob.state + ' "></i>';
+            }
             ret +=                  '<i id="geolock-state'+item.IMEI+'" class="icon-other-geolock '+assetFeaturesStatus.geolock.state+' "></i>';
             ret +=              '</div>';
             ret +=          '</div>';
@@ -507,7 +509,7 @@ virtualAssetList = App.virtualList('.assets_list', {
             ret +=          '</div>';
             ret +=          '<div class="item-title-row item-title-row-status">';
             ret +=              '<div class="item-title item-subtitle state-0"><i class="icon-status-fix icon-other-asset"></i>'+LANGUAGE.COM_MSG11+'</div>';
-            ret +=              '<div class="item-after"><i class="icon-other-lock state-0"></i><i class="icon-other-geolock state-0"></i></div>';
+            ret +=              '<div class="item-after"><i class="icon-other-geolock state-0"></i></div>';
             ret +=          '</div>';
             ret +=      '</div>';                   
             ret +=  '</li>';
@@ -3214,6 +3216,8 @@ function loadStatusPage(){
                 ImmobState: assetStats.immob,
                 GeolockState: assetStats.geolock,                
                 Coords: 'GPS: ' + Protocol.Helper.convertDMS(latlng.lat, latlng.lng),
+
+                ImmobSupported: ((parseInt(POSINFOASSETLIST[TargetAsset.ASSET_IMEI]._FIELD_INT2) & 1) > 0)
 	        }
 	    }); 
 
