@@ -164,24 +164,44 @@ Protocol = {
     ],
     Helper: {
         getSpeedValue: function (speedUnit, speed) {
-            var ret = 0;
+            let ret = 0;
             switch (speedUnit) {
                 case "KT":
-                    ret = parseInt(speed  * 0.53995680345572);
+                    ret = parseFloat(speed  * 0.53995680345572);
                     break;
                 case "KPH":
-                    ret = parseInt(speed);
+                    ret = parseFloat(speed);
                     break;
                 case "MPS":
-                    ret = parseInt(speed * 0.277777778);
+                    ret = parseFloat(speed * 0.277777778);
                     break;
                 case "MPH":
-                    ret = parseInt(speed * 0.621371192);
+                    ret = parseFloat(speed * 0.621371192);
                     break;
                 default:
                     break;
             }
-            return ret;
+            return Math.round(ret);
+        },
+        getSpeedValueInKM: function (speedUnit, speed) {
+            let ret = 0;
+            switch (speedUnit) {
+                case "KT":
+                    ret = parseFloat(speed  / 0.53995680345572);
+                    break;
+                case "KPH":
+                    ret = parseFloat(speed);
+                    break;
+                case "MPS":
+                    ret = parseFloat(speed / 0.277777778);
+                    break;
+                case "MPH":
+                    ret = parseFloat(speed / 0.621371192);
+                    break;
+                default:
+                    break;
+            }
+            return Math.round(ret);
         },
         getSpeedUnit: function (speedUnit) {
             var ret = "";
@@ -313,6 +333,19 @@ Protocol = {
             return ret;
            
         },
+        getAlertNameByType: function(type){
+            var ret = "";
+            type ? type = parseInt(type,10) : '';
+            switch (type){
+                case 8:
+                    ret = LANGUAGE.ALARM_MSG12;    //InGeoFance
+                    break;
+                case 16:
+                    ret = LANGUAGE.ALARM_MSG13;     //OutGeoFance
+                    break;
+            }
+            return ret;
+        },
         getDifferenceBTtwoDates: function(date1, date2){
             var ret = "";
             if (date1 && date2) {
@@ -326,19 +359,23 @@ Protocol = {
             }
             return ret;
         },
-        getGeoImmobState: function(val){            
+        getGeoImmobState: function(val){
             var ret = {
-                Geolock : false,
-                Immobilise : false
+                Geolock: false,
+                Immobilise: false,
+                LockDoor: false,
             };
             if (val) {
-                if ((parseInt(val) & 1) > 0) {        
-                    ret.Geolock = true; 
+                if ((parseInt(val) & 1) > 0) {
+                    ret.Geolock = true;
                 }
-                if ((parseInt(val) & 2) > 0) {        
-                    ret.Immobilise = true; 
+                if ((parseInt(val) & 2) > 0) {
+                    ret.Immobilise = true;
                 }
-            }            
+                if ((parseInt(val) & 4) > 0) {
+                    ret.LockDoor = true;
+                }
+            }
             return ret;
         },
         getGeofenceAlertType: function(val){
@@ -471,7 +508,7 @@ Protocol = {
             var layers = {
                 "<span class='mapSwitcherWrapper googleSwitcherWrapper'><img class='layer-icon' src='resources/images/googleRoad.png' alt='' /> <p>Map</p></span>": googleStreets,
                 "<span class='mapSwitcherWrapper satelliteSwitcherWrapper'><img class='layer-icon' src='resources/images/googleSatellite.png' alt='' />  <p>Satellite</p></span>": googleSatelitte,
-                //"<span class='mapSwitcherWrapper openstreetSwitcherWrapper'><img class='layer-icon' src='resources/images/openStreet.png' alt='' /> <p>OpenStreet</p></span>": osm,
+                "<span class='mapSwitcherWrapper openstreetSwitcherWrapper'><img class='layer-icon' src='resources/images/openStreet.png' alt='' /> <p>OpenStreet</p></span>": osm,
             };
 
             L.control.layers(layers).addTo(map);
@@ -731,7 +768,7 @@ Protocol = {
                     }else if(asset.posInfo.speed === 0){
                         ret.GPS.state = 'state-1';
                     }
-                    
+
                     ret.geolock = {
                         value: false,
                         state: 'state-0',
@@ -740,7 +777,11 @@ Protocol = {
                         value: false,
                         state: 'state-0',
                     };
-                    if (asset.StatusNew) {                       
+                    ret.lockdoor = {
+                        value: false,
+                        state: 'state-0',
+                    };
+                    if (asset.StatusNew) {
                         var geolockImmobSate = Protocol.Helper.getGeoImmobState(asset.StatusNew);
                         if (geolockImmobSate.Geolock) {
                             ret.geolock.value = geolockImmobSate.Geolock;
@@ -748,9 +789,13 @@ Protocol = {
                         }
                         if (geolockImmobSate.Immobilise) {
                             ret.immob.value = geolockImmobSate.Immobilise;
-                            ret.immob.state = 'state-3'; 
+                            ret.immob.state = 'state-3';
                         }
-                    }                
+                        if (geolockImmobSate.LockDoor) {
+                            ret.lockdoor.value = geolockImmobSate.LockDoor;
+                            ret.lockdoor.state = 'state-3';
+                        }
+                    }
                 }  
             }
                 
@@ -814,7 +859,13 @@ Protocol.Common = JClass({
         this.AlarmOptions = arg.AlarmOptions;
         this._FIELD_FLOAT8 = arg._FIELD_FLOAT8;
         this.StatusNew = arg.StatusNew;    
-        this._FIELD_INT2 = arg._FIELD_INT2;   
+        this._FIELD_INT2 = arg._FIELD_INT2;
+        this.GroupCode = arg.GroupCode;
+        this.SolutionType = arg.SolutionType;
+        this.Registration = arg.Registration;
+        this.StockNumber = arg.StockNumber;
+        this.MaxSpeed = arg.MaxSpeed;
+        this.MaxSpeedAlertMode = arg.MaxSpeedAlertMode;
                
     
     },

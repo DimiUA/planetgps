@@ -74,7 +74,9 @@ body.with-panel-left-reveal .panel-overlay{
 .color-dealer{
 	color: #48234E;
 }
-
+.line-height-1{
+	line-height: 1;
+}
 .layout-dark.list-block input{
 	color: #fff;
 }
@@ -175,6 +177,38 @@ html:not(.watch-active-state) .button.btn_login.button-fill:active{
 }
 .state-3{
 	color: #E5425A !important;
+}
+
+.label-checkbox .item-after .icon, label.label-checkbox .item-after i.icon-form-checkbox {
+	margin-right: 0;
+}
+
+.list-block .item-divider:before, .list-block .list-group-title:before, .list-block .with-top-divider:before {
+	content: '';
+	position: absolute;
+	left: 0;
+	bottom: auto;
+	right: auto;
+	top: 0;
+	height: 1px;
+	width: 100%;
+	background-color: rgba(0,0,0,.12);
+	display: block;
+	z-index: 15;
+	-webkit-transform-origin: 50% 100%;
+	transform-origin: 50% 100%;
+}
+
+.popover-status {
+	padding: 0 8px;
+	width: auto;
+	max-width: 320px;
+}
+.pr-0 {
+	padding-right: 0!important;
+}
+.pl-0 {
+	padding-left: 0!important;
 }
 /* INDEX PAGE */
 .menu_header{
@@ -1776,3 +1810,15 @@ tossing
     	background: transparent;
     	padding: 12px 0 0;
 	}
+
+.modal-checkbox{
+	margin-top: 8px;
+	margin-bottom: 0;
+}
+.modal-checkbox.list-block .item-content{
+	padding-left: 0;
+}
+.modal-checkbox.list-block .item-inner{
+	padding-right: 0;
+	margin-left: 0;
+}

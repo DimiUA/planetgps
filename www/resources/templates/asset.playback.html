@@ -91,7 +91,20 @@
         
         <div class="list-block media-list no-hairlines list-playback-settings m-0">
             <ul>
-                <li class="item-divider no-before">{{@global.LANGUAGE.ASSET_PLAYBACK_MSG00}}</li>
+                <li >
+                    <label class="label-checkbox item-content no-fastclick " >
+                        <input type="checkbox"  name="optimizedState" value="" checked="checked">
+                        <div class="item-inner">
+                            <div class="item-title-row">
+                                <div class="item-title ">{{@global.LANGUAGE.ASSET_PLAYBACK_MSG29}}</div>
+                                <div class="item-after">
+                                    <i class="icon icon-form-checkbox"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </label>
+                </li>
+                <li class="item-divider ">{{@global.LANGUAGE.ASSET_PLAYBACK_MSG00}}</li> <!-- no-before -->
                 <li>
                     <a href="#" class="item-content item-link item-with-arrow">
                         <div class="item-media"></div>
