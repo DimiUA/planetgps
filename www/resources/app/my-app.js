@@ -48,8 +48,8 @@ function getPlusInfo(){
             if(!localStorage.PUSH_DEVICE_TOKEN)
             localStorage.PUSH_DEVICE_TOKEN = uid;
             //localStorage.PUSH_DEVICE_TOKEN = "75ba1639-92ae-0c4c-d423-4fad1e48a49d"
-        localStorage.PUSH_APPID_ID = 'webapp';
-        localStorage.DEVICE_TYPE = "webapp";        
+        localStorage.PUSH_APPID_ID = 'ios.app.quiktrak.eu.planetgps';
+        localStorage.DEVICE_TYPE = "ios.app.quiktrak.eu.planetgps";
     }
 }
 
@@ -78,12 +78,13 @@ var AppDetails = {
 };
 
 function onDeviceReady(){
-    if(BuildInfo){
-        AppDetails.appId = BuildInfo.packageName;
-    }
     if (cordova && cordova.InAppBrowser) {
         window.open = cordova.InAppBrowser.open;
     }
+    if(BuildInfo){
+        AppDetails.appId = BuildInfo.packageName;
+    }
+
     //fix app images and text size
     if (window.MobileAccessibility) {
         window.MobileAccessibility.usePreferredTextZoom(false);    
@@ -296,7 +297,7 @@ var prevStatusLatLng = {
 
 var geofenceMarkerGroup = false;
 var AllMarkersGroup = false;
-var GeofenceFiguresGroup = new L.FeatureGroup();
+var GeofenceFiguresGroup = false;
 
 var API_DOMIAN1 = "https://api.m2mglobaltech.com/QuikTrak/V1/";
 var API_DOMIAN2 = "";
@@ -4386,6 +4387,7 @@ function showMapGeofence(geofence) {
     var assets = [];
     var editFlag = 0;
     var userInfo = getUserinfo();
+    var polygonStyles = Protocol.PolygonCustomization;
 
     if (geofence) {
         editFlag = 1;
@@ -4397,10 +4399,13 @@ function showMapGeofence(geofence) {
             });
         }
         if (geofence.GeoType == 1) { //circle
-            geofenceFigure = L.circle(latlng, {
+
+            /*geofenceFigure = L.circle(latlng, {
                 ...Protocol.PolygonCustomization,
                 radius: geofence.Radius,
-            });
+            });*/
+            polygonStyles.radius = geofence.Radius;
+            geofenceFigure = L.circle(latlng, polygonStyles);
         }else{
             if (geofence.GeoPolygon) {
                 var polygonCoordsArr = geofence.GeoPolygon.split('((').pop().split('))')[0].split(',');
@@ -4408,9 +4413,10 @@ function showMapGeofence(geofence) {
                 for (var i = polygonCoordsArr.length - 1; i >= 0; i--) {
                     geojsonArr.push(polygonCoordsArr[i].split(' ').map(parseFloat).reverse());
                 }
-                geofenceFigure = L.polygon(geojsonArr, {
+                geofenceFigure = L.polygon(geojsonArr, polygonStyles);
+                /*geofenceFigure = L.polygon(geojsonArr, {
                     ...Protocol.PolygonCustomization
-                });
+                });*/
             }
         }
     } else {
