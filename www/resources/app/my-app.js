@@ -1014,12 +1014,18 @@ App.onPageInit('asset.edit', function (page) {
     selectUnitSpeed.val(selectUnitSpeed.data("set"));
 
     $$('.saveAssetEdit').on('click', function(){
+        var Unit = $$(page.container).find('select[name="Unit"]').val();
+        var MaxSpeed = $$(page.container).find('input[name="MaxSpeed"]').val();
+        if (MaxSpeed && Unit) {
+            MaxSpeed = Protocol.Helper.getSpeedValueInKM(Unit, MaxSpeed);
+        }
+
         var device = {
             IMEI: $$(page.container).find('input[name="IMEI"]').val(),
             Name: $$(page.container).find('input[name="Name"]').val(),
             Registration: $$(page.container).find('input[name="Registration"]').val(),
             Tag: $$(page.container).find('input[name="Tag"]').val(),
-            Unit: $$(page.container).find('select[name="Unit"]').val(),
+            Unit: Unit,
             Mileage: $$(page.container).find('input[name="Mileage"]').val(),
             Runtime: $$(page.container).find('input[name="Runtime"]').val(),            
             Describe1: $$(page.container).find('input[name="Describe1"]').val(),
