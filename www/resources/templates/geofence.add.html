@@ -1,166 +1,136 @@
-<div class="page bg-color-page geofence_add_page" data-page="geofence.add">
-    <input type="hidden" name="geofenceEdit" value="{{Edit}}">
-    <div class="navbar ">
-        <div class="navbar-inner">
-            <div class="left">
-                <a href="#" class="back link "> <i class="f7-icons icon-header-arrow-back"></i></a>
-            </div>
-            <div class="left navbar_title">{{GeofenceName}}</div>
-            <div class="right">
-                <a href="#" class="link  saveGeofence"><i class="f7-icons icon-header-apply"></i></a>
-            </div>
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="left">
+            <a href="#" class="back link "> <i class="f7-icons icon-header-arrow-back"></i></a>
         </div>
+        <div class="center sliding">{{GeofenceName}}</div>
+        <div class="right sliding">
+            <a href="#" class="link saveGeofence"><i class="f7-icons icon-header-apply"></i></a>
+        </div>
+
+        <!--<div class="subnavbar">
+            <div class="buttons-row">
+                <div class="item-input input_geolock_radius">
+                    <input type="tel" name="geolockRadius" placeholder="{{@global.LANGUAGE.GEOFENCE_MSG_27}}" value="{{Radius}}" class="only_numbers">
+                </div>
+            </div>
+        </div>-->
     </div>
-    <div class="page-content">
-        <div class="position_map">
-            <!--<div class="item-input input_geolock_radius">
-                <input type="tel" name="geolockRadius" placeholder="{{@global.LANGUAGE.GEOFENCE_MSG_27}}" value="{{Radius}}" class="only_numbers">
-            </div>-->
-            <div class="map" id="map"></div>
-        </div>
-        <div class="position_bottom">
-            <div class="list-block media-list no-hairlines  list_geofence_preferences">
-                <ul>
-                    <li class="item-divider">{{@global.LANGUAGE.GEOFENCE_MSG_01}}</li>
-                    <!-- <li>
-                        <a href="#" class="item-link smart-select  item-with-arrow" data-searchbar="true" data-searchbar-placeholder="Enter Name">
-                            <select name="assets" data-option-image="resources/images/svg_asset.svg" multiple>
-                                {{#each Assets}}
-                                    <option value="{{Id}}" {{#if Selected}} selected {{/if}}>{{Name}}</option>
-                                {{/each}}
-                            </select>
+</div>
+
+
+
+
+
+<div class="pages ">
+    <div class="page bg-color-page geofence_add_page " data-page="geofence.add">
+        <input type="hidden" name="geofenceEdit" value="{{Edit}}">
+
+        <div class="page-content">
+            <div class="position_map">
+                <div class="map" id="map"></div>
+            </div>
+            <span class="position_bottom ">
+
+                <div class="content-block-title ">{{@global.LANGUAGE.GEOFENCE_MSG_01}}</div>
+                <div class="list-block list_geofence_preferences list-block-input " >
+                    <ul>
+                        <!-- <li class="item-divider">{{@global.LANGUAGE.GEOFENCE_MSG_01}}</li>           -->
+                        <li>
+                            <a href="#" class="item-link smart-select " data-back-text=" " data-searchbar="true" data-searchbar-placeholder="Enter Name">
+                                <select name="assets"  multiple>
+                                    {{#each Assets}}
+                                        <option value="{{Id}}" data-imei="{{IMEI}}"  {{#if Selected}} selected {{/if}}>{{Name}}</option>
+                                    {{/each}}
+                                </select>
+                                <div class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title label">{{@global.LANGUAGE.GEOFENCE_MSG_04}}</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="content-block-title ">{{@global.LANGUAGE.GEOFENCE_MSG_02}}</div>
+                <div class="list-block list_geofence_preferences list-block-input " >
+                    <ul>
+                        <!-- <li class="item-divider">{{@global.LANGUAGE.GEOFENCE_MSG_02}}</li>             -->
+                        <li>
                             <div class="item-content">
-                                <div class="item-media"></div>
-                                <div class="item-inner no-after">
-                                    <div class="item-title ">{{@global.LANGUAGE.GEOFENCE_MSG_04}}</div>
-                                    <div class="item-after">Assets</div>
-                                </div>
-                            </div>
-                        </a>
-                    </li>   -->
-                    <li>
-                        <div class="item-content item-with-arrow item-select-wrapper">
-                            <div class="item-media"></div>
-                            <div class="item-inner no-after">
-                                <div class="item-title label ">{{@global.LANGUAGE.GEOFENCE_MSG_04}}</div>
-                                <div class="item-input select_input">
-                                    <select name="assets" multiple>
-                                        {{#each Assets}}
-                                        <option value="{{Id}}" data-imei="{{IMEI}}" {{#if Selected}} selected {{/if}}>{{Name}}</option>
-                                        {{/each}}
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="item-divider">{{@global.LANGUAGE.GEOFENCE_MSG_02}}</li>
-                    <li>
-                        <div class="item-content">
-                            <div class="item-media"></div>
-                            <div class="item-inner">
-                                <div class="item-title label ">{{@global.LANGUAGE.GEOFENCE_MSG_05}}</div>
-                                <div class="item-input">
-                                    <input type="text" placeholder="{{@global.LANGUAGE.GEOFENCE_MSG_05}}" name="geofenceName" value="{{Name}}" maxlength="200">
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <form action="" name="searchGeofenceAddress" class="form_geofence_search_address">
-                            <div class="item-content">
-                                <div class="item-media"></div>
                                 <div class="item-inner">
-                                    <div class="item-title label ">{{@global.LANGUAGE.GEOFENCE_MSG_06}}</div>
+                                    <div class="item-title label ">{{@global.LANGUAGE.GEOFENCE_MSG_05}}</div>
                                     <div class="item-input">
-                                        <input type="text" placeholder="{{@global.LANGUAGE.GEOFENCE_MSG_11}}" name="geofenceAddress" value="{{Address}}" maxlength="500">
-                                        <button type="submit" class=""><i class="f7-icons color-dealer">search</i></button>
+                                        <input type="text" placeholder="{{@global.LANGUAGE.GEOFENCE_MSG_05}}" name="geofenceName" value="{{Name}}" maxlength="200">
                                     </div>
                                 </div>
                             </div>
-                        </form>
-                    </li>
-                    <li>
-                        <div class="item-content item-with-arrow item-select-wrapper">
-                            <div class="item-media"></div>
-                            <div class="item-inner no-after">
-                                <div class="item-title label ">{{@global.LANGUAGE.GEOFENCE_MSG_07}}</div>
-                                <div class="item-input select_input">
-                                    <select name="alarmType" multiple>
-                                        <option value="8" {{#if AlarmIn}} selected {{/if}}>{{@global.LANGUAGE.GEOFENCE_MSG_12}}</option>
-                                        <option value="16" {{#if AlarmOut}} selected {{/if}}>{{@global.LANGUAGE.GEOFENCE_MSG_13}}</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-
-                    <li class="with-top-divider">
-                        <div class="item-content no-fastclick hintParent" data-hint-text="{{@global.LANGUAGE.PROMPT_MSG074}}" data-hint-title="{{@global.LANGUAGE.GEOFENCE_MSG_28}}">
-                            <div class="item-media mb-0 align-self-center showHint">
-                                <i class="f7-icons icon-hint color-gray"></i>
-                            </div>
-                            <div class="item-inner">
-                                <div class="item-title-row">
-                                    <div class="item-title  text-transform-uppercase showHint">{{@global.LANGUAGE.GEOFENCE_MSG_28}}</div>
-                                    <div class="item-after">
-                                        <div class="item-input align-self-center">
-                                            <label class="label-switch">
-                                                <input type="checkbox"  name="ignoreBetween" {{#if IgnoreBetween}} checked="checked" {{/if}}>
-                                                <div class="checkbox"></div>
-                                            </label>
+                        </li>
+                        <li class="align-top">
+                            <form action="" name="searchGeofenceAddress" class="form_geofence_search_address">
+                                <div class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title label ">{{@global.LANGUAGE.GEOFENCE_MSG_06}}</div>
+                                        <div class="item-input">
+                                            <textarea type="text" placeholder="{{@global.LANGUAGE.GEOFENCE_MSG_11}}" name="geofenceAddress" value="{{Address}}" maxlength="500">{{Address}}</textarea>
+                                            <button type="submit" class=""><i class="f7-icons color-dealer">search</i></button>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </li>
-                    <!--<li class="with-top-divider ">
-                        <label class="label-checkbox item-content no-fastclick">
-                            <input type="checkbox" name="ignoreBetween" value="" {{#if IgnoreBetween}} checked="checked" {{/if}} >
-                            &lt;!&ndash; <div class="item-media"></div> &ndash;&gt;
-                            <div class="item-inner">
-                                <div class="item-title-row">
-                                    <div class="item-title  text-transform-uppercase">{{@global.LANGUAGE.GEOFENCE_MSG_28}}</div>
-                                    <div class="item-after">
-                                        <i class="icon icon-form-checkbox"></i>
+                            </form>
+                        </li>
+
+                        <li>
+                            <a href="#" class="item-link smart-select " data-back-text=" " >
+                                <select name="alarmType"  multiple>
+                                    <option value="8" {{#if AlarmIn}} selected {{/if}}>{{@global.LANGUAGE.GEOFENCE_MSG_12}}</option>
+                                    <option value="16" {{#if AlarmOut}} selected {{/if}}>{{@global.LANGUAGE.GEOFENCE_MSG_13}}</option>
+                                </select>
+                                <div class="item-content">
+                                    <div class="item-inner ">
+                                        <div class="item-title label">{{@global.LANGUAGE.GEOFENCE_MSG_07}}</div>
                                     </div>
                                 </div>
-                            </div>
-                        </label>
-                    </li>          -->
+                            </a>
+                        </li>
 
-                    <li class="picker-el-wrapper {{#unless IgnoreBetween}} disabled {{/unless}}">
-                        <a href="#" class="item-content item-link item-with-arrow">
-                            <div class="item-media"></div>
-                            <div class="item-inner">
-                                <div class="item-title label">{{@global.LANGUAGE.GEOFENCE_MSG_16}}</div>
-                                <div class="item-input">
-                                    <input type="text" placeholder="{{@global.LANGUAGE.GEOFENCE_MSG_16}}" name="picker-from" class="picker-from" readonly value="{{BeginTime}}">
+                    </ul>
+                </div>
+                <div class="content-block-title bw-li-switch hintParent" data-hint-text="{{@global.LANGUAGE.PROMPT_MSG074}}" data-hint-title="{{@global.LANGUAGE.GEOFENCE_MSG_28}}">
+                    <span class="showHint">{{@global.LANGUAGE.GEOFENCE_MSG_28}}</span>
+                    <label class="label-switch">
+                        <input type="checkbox" name="ignoreBetween" {{#if IgnoreBetween}} checked="checked" {{/if}}>
+                        <div class="checkbox"></div>
+                    </label>
+                </div>
+                <div class="list-block list_geofence_preferences list-block-input " >
+                    <ul>
+                        <li class="picker-el-wrapper {{#unless IgnoreBetween}} disabled {{/unless}}">
+                            <a href="#" class="item-content item-link item-with-arrow">
+                                <div class="item-inner">
+                                    <div class="item-title label">{{@global.LANGUAGE.GEOFENCE_MSG_16}}</div>
+                                    <div class="item-input">
+                                        <input type="text" placeholder="{{@global.LANGUAGE.GEOFENCE_MSG_16}}" name="picker-from" class="picker-from" readonly value="{{BeginTime}}">
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="picker-el-wrapper {{#unless IgnoreBetween}} disabled {{/unless}}">
-                        <a href="#" class="item-content item-link item-with-arrow">
-                            <div class="item-media"></div>
-                            <div class="item-inner">
-                                <div class="item-title label">{{@global.LANGUAGE.GEOFENCE_MSG_17}}</div>
-                                <div class="item-input  no-after">
-                                    <input type="text" placeholder="{{@global.LANGUAGE.GEOFENCE_MSG_17}}" name="picker-to" class="picker-to" readonly value="{{EndTime}}">
+                            </a>
+                        </li>
+                        <li class="picker-el-wrapper {{#unless IgnoreBetween}} disabled {{/unless}}">
+                            <a href="#" class="item-content item-link item-with-arrow">
+                                <div class="item-inner no-after">
+                                    <div class="item-title label">{{@global.LANGUAGE.GEOFENCE_MSG_17}}</div>
+                                    <div class="item-input  no-after">
+                                        <input type="text" placeholder="{{@global.LANGUAGE.GEOFENCE_MSG_17}}" name="picker-to" class="picker-to" readonly value="{{EndTime}}">
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="ignore-on-wrapper {{#unless IgnoreBetween}} disabled {{/unless}}">
-                        <div class="item-content item-with-arrow item-select-wrapper">
-                            <div class="item-media"></div>
-                            <div class="item-inner no-after">
-                                <div class="item-title label ">{{@global.LANGUAGE.GEOFENCE_MSG_31}}</div>
-                                <div class="item-input select_input">
-                                    <select name="ignore-days" multiple>
-                                        {{#each DaysOfWeek}}
+                            </a>
+                        </li>
+                        <li class="ignore-on-wrapper {{#unless IgnoreBetween}} disabled {{/unless}}">
+                            <a href="#" class="item-link smart-select " data-back-text=" " >
+                                <select name="ignore-days"  multiple>
+                                    {{#each DaysOfWeek}}
                                         <option value="{{val}}" {{#if selected}} selected {{/if}}>{{name}}</option>
-                                        {{else}}
+                                    {{else}}
                                         <option value="0" >{{@global.LANGUAGE.GEOFENCE_MSG_20}}</option>
                                         <option value="1" >{{@global.LANGUAGE.GEOFENCE_MSG_21}}</option>
                                         <option value="5" >{{@global.LANGUAGE.GEOFENCE_MSG_22}}</option>
@@ -168,77 +138,36 @@
                                         <option value="4" >{{@global.LANGUAGE.GEOFENCE_MSG_24}}</option>
                                         <option value="5" >{{@global.LANGUAGE.GEOFENCE_MSG_25}}</option>
                                         <option value="6" >{{@global.LANGUAGE.GEOFENCE_MSG_26}}</option>
-                                        {{/each}}
-
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="with-top-divider">
-                        <div class="item-content no-fastclick hintParent" data-hint-text="{{@global.LANGUAGE.PROMPT_MSG073}}" data-hint-title="{{@global.LANGUAGE.GEOFENCE_MSG_35}}">
-                            <div class="item-media mb-0 align-self-center showHint ">
-                                <i class="f7-icons icon-hint color-gray"></i>
-                            </div>
-                            <div class="item-inner">
-                                <div class="item-title-row">
-                                    <div class="item-title  text-transform-uppercase showHint">{{@global.LANGUAGE.GEOFENCE_MSG_35}}</div>
-                                    <div class="item-after">
-                                        <div class="item-input align-self-center">
-                                            <label class="label-switch">
-                                                <input type="checkbox"  name="geofence-share" {{#if Share}}checked="checked"{{/if}}>
-                                                <div class="checkbox"></div>
-                                            </label>
-                                        </div>
+                                    {{/each}}
+                                </select>
+                                <div class="item-content">
+                                    <div class="item-inner ">
+                                        <div class="item-title label">{{@global.LANGUAGE.GEOFENCE_MSG_31}}</div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </li>
-                    <!--<li class="with-top-divider">
-                        <label class="label-checkbox item-content no-fastclick">
-                            <input type="checkbox" name="geofenceState" value="" {{#if GeofenceState}} checked="checked" {{/if}} >
-                            &lt;!&ndash; <div class="item-media"></div> &ndash;&gt;
-                            <div class="item-inner">
-                                <div class="item-title-row">
-                                    <div class="item-title  text-transform-uppercase">{{@global.LANGUAGE.GEOFENCE_MSG_10}}</div>
-                                    <div class="item-after">
-                                        <i class="icon icon-form-checkbox"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </label>
-                    </li>-->
-                    <li class="with-top-divider">
-                        <div class="item-content no-fastclick hintParent" data-hint-text="{{@global.LANGUAGE.PROMPT_MSG073}}" data-hint-title="{{@global.LANGUAGE.GEOFENCE_MSG_35}}">
-                            <!--<div class="item-media mb-0 ">
-                                <i class="f7-icons icon-hint color-gray"></i>
-                            </div>-->
-                            <div class="item-inner">
-                                <div class="item-title-row">
-                                    <div class="item-title  text-transform-uppercase ">{{@global.LANGUAGE.GEOFENCE_MSG_10}}</div>
-                                    <div class="item-after">
-                                        <div class="item-input align-self-center">
-                                            <label class="label-switch">
-                                                <input type="checkbox"  name="geofenceState" {{#if GeofenceState}} checked="checked" {{/if}}>
-                                                <div class="checkbox"></div>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
+                            </a>
+                        </li>
 
-
-                </ul>
-
-
-
-            </div>
+                    </ul>
+                </div>
+                <div class="content-block-title bw-li-switch hintParent" data-hint-text="{{@global.LANGUAGE.PROMPT_MSG073}}" data-hint-title="{{@global.LANGUAGE.GEOFENCE_MSG_35}}">
+                    <span class="showHint">{{@global.LANGUAGE.GEOFENCE_MSG_35}}</span>
+                    <label class="label-switch">
+                        <input type="checkbox" name="geofence-share" {{#if Share}}checked="checked"{{/if}}>
+                        <div class="checkbox"></div>
+                    </label>
+                </div>
+                <div class="content-block-title bw-li-switch">
+                    {{@global.LANGUAGE.GEOFENCE_MSG_10}}
+                    <label class="label-switch">
+                        <input type="checkbox" name="geofenceState" {{#if GeofenceState}} checked="checked" {{/if}}>
+                        <div class="checkbox"></div>
+                    </label>
+                </div>
 
         </div>
     </div>
 
 </div>
 
+</div>
