@@ -395,7 +395,6 @@ Protocol.GOT20 = JClass(Protocol.Common,{
         posInfo.Input1Voltage = ary[24];
         posInfo.Input2Voltage = ary[25];
         posInfo.Engine = ary[26];
-        console.log(posInfo)
         if (posInfo.Voltage >= 0 && posInfo.Voltage <= 3.39) {
             //blevel = 5;
             posInfo.Battery = 0;
@@ -520,6 +519,7 @@ Protocol.GOT20B = JClass(Protocol.Common,{
     },
 });
 Protocol.ClassManager.add("GOT20B", Protocol.GOT20B);
+
 
 Protocol.TKSTAR = JClass(Protocol.Common,{
     STATIC: {
