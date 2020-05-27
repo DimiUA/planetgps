@@ -1,70 +1,66 @@
-<div class="navbar ">
-    <div class="navbar-inner">
-        <div class="left">
-            <a href="#" class="link back "> <i class="f7-icons icon-header-arrow-back"></i></a>
-        </div>
-        <div class="center  ">{{@global.LANGUAGE.SETTINGS_MSG00}}</div>
-        <!-- <div class="right"> 
-            <a href="#" class="link SaveDeleteHistory"><i class="f7-icons">check</i></a> 
-        </div> -->
-    </div>
-</div>
 
-<div class="pages">
-    <div class="page bg-color-page delete_history_page" data-page="delete.history">
-    	
-      	<form class="searchbar searchbarGeofence" >
+<div class="page bg-color-page delete_history_page" data-page="delete.history">
+	<div class="navbar ">
+    	<div class="navbar-inner">
+    	  	<div class="left">
+            	<a href="#" class="link back "> <i class="f7-icons icon-header-arrow-back"></i></a>
+            </div>
+    		<div class="left navbar_title navbar_title_index">{{@global.LANGUAGE.SETTINGS_MSG00}}</div>
+    		<!-- <div class="right"> 
+                <a href="#" class="link SaveDeleteHistory"><i class="f7-icons">check</i></a> 
+            </div> -->
+    	</div>
+  	</div>
+  	<form class="searchbar searchbarGeofence theme-white" >
             <div class="searchbar-input">
                 <input type="search" placeholder="{{@global.LANGUAGE.COM_MSG06}}">
                 <a href="#" class="searchbar-clear"></a>
             </div>
-            <a href="#" class="searchbar-cancel color-white">{{@global.LANGUAGE.COM_MSG04}}</a>
-        </form>
-        <div class="searchbar-overlay"></div>   
-      	
-      	<div class="page-content">
-      		<div class="content-block geofence-search-nothing-found searchbar-not-found ">                               
-                {{@global.LANGUAGE.COM_MSG05}}
-            </div>
-      		<div class="list-block media-list no-hairlines no-hairlines-between list-block-search-geofence delete_history_list"> 
-      				
-      			<ul>
-    				{{#each Assets}}
-                    <li >               
-                        <a href="#" class="item-content item-link" data-id="{{Id}}" data-imei="{{IMEI}}">
-                            <div class="item-media  ">{{AssetImg}}</div>
-                            <div class="item-inner">
-                                <div class="item-title-row">
-                                    <div class="item-title ">{{Name}}</div> 
-                                </div>
+            <a href="#" class="searchbar-cancel">{{@global.LANGUAGE.COM_MSG04}}</a>
+        </form>   
+    <div class="searchbar-overlay"></div>   
+  	
+  	<div class="page-content">
+  		<div class="content-block geofence-search-nothing-found searchbar-not-found ">                               
+            {{@global.LANGUAGE.COM_MSG05}}
+        </div>
+  		<div class="list-block media-list no-hairlines no-hairlines-between list-block-search-geofence delete_history_list"> 
+  				
+  			<ul>
+				{{#each Assets}}
+  				<!-- <li >
+                                    <label class="label-checkbox item-content  no-fastclick " >
+                                      <input type="checkbox" name="checkbox-{{Name}}" value="{{IMEI}}" >
+                                      <div class="item-media  ">
+                                            {{AssetImg}}
+                                        </div>
+                                      <div class="item-inner">
+                                          <div class="item-title-row">
+                                              <div class="item-title ">{{Name}}</div>
+                                              <div class="item-after">
+                                              <i class="icon icon-form-checkbox"></i>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </label>
+                                  </li>     -->   
+                <li >               
+                    <a href="#" class="item-content item-link" data-id="{{Id}}" data-imei="{{IMEI}}">
+                        <div class="item-media  ">{{AssetImg}}</div>
+                        <div class="item-inner">
+                            <div class="item-title-row">
+                                <div class="item-title ">{{Name}}</div> 
                             </div>
-                        </a>                    
-                    </li>  
-      				<!-- <li >
-                        <label class="label-checkbox item-content  no-fastclick " >
-                          <input type="checkbox" name="checkbox-{{Name}}" value="{{IMEI}}" >
-                          <div class="item-media  ">
-                                {{AssetImg}}
-                            </div>
-                          <div class="item-inner">
-                              <div class="item-title-row">
-                                  <div class="item-title ">{{Name}}</div>
-                                  <div class="item-after">
-                                  <i class="icon icon-form-checkbox"></i>
-                                </div>
-                                </div>
-                            </div>
-                        </label>
-                    </li>     -->   
-                            
-          		    {{/each}}
-    	            
-    	        </ul>
-    	        
-      		</div>
+                        </div>
+                    </a>                    
+                </li>          
+      		    {{/each}}
+	            
+	        </ul>
+	        
+  		</div>
 
-    		
-      	</div>
-    	
-    </div>
+		
+  	</div>
+	
 </div>
