@@ -196,6 +196,10 @@ html:not(.watch-active-state) .button.btn_login.button-fill:active{
 .label-checkbox .item-after .icon, label.label-checkbox .item-after i.icon-form-checkbox {
 	margin-right: 0;
 }
+.smart-select-page .label-checkbox .item-after .icon, .smart-select-page label.label-checkbox .item-after i.icon-form-checkbox {
+	margin-right: 16px;
+}
+
 
 .list-block .item-divider:before, .list-block .list-group-title:before, .list-block .with-top-divider:before {
 	content: '';
