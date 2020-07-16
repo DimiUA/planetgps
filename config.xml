@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget 
-  version="1.1.83"
-  android-versionCode="58"
-  ios-CFBundleVersion="58"
-  id="com.sinopacific.planetgps"
+  version="1.1.84"
+  android-versionCode="59"
+  ios-CFBundleVersion="59"
+  id="com.planetgps.app"
   xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:android="http://schemas.android.com/apk/res/android" defaultlocale="en-US" >
 
   <!-- android  	com.planetgps.app -->

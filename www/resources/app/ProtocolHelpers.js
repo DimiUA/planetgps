@@ -358,8 +358,8 @@ Protocol.JT808_KMXXX = JClass(Protocol.Common,{
     },
     initHisPosInfoEx:function(ary, posInfo){
         //posInfo.Battery = ary[21];
-    } 
-      
+    }
+
 });
 Protocol.ClassManager.add("JT808_KMXXX", Protocol.JT808_KMXXX);
 
@@ -378,7 +378,7 @@ Protocol.TIANQIN_LK3GP = JClass(Protocol.Common,{
     initHisPosInfoEx:function(ary, posInfo){
         posInfo.Battery = ary[21];
     },
-    
+
 });
 Protocol.ClassManager.add("TIANQIN_LK3GP", Protocol.TIANQIN_LK3GP);
 
@@ -395,6 +395,7 @@ Protocol.GOT20 = JClass(Protocol.Common,{
         posInfo.Input1Voltage = ary[24];
         posInfo.Input2Voltage = ary[25];
         posInfo.Engine = ary[26];
+        //console.log(posInfo)
         if (posInfo.Voltage >= 0 && posInfo.Voltage <= 3.39) {
             //blevel = 5;
             posInfo.Battery = 0;
@@ -520,7 +521,6 @@ Protocol.GOT20B = JClass(Protocol.Common,{
 });
 Protocol.ClassManager.add("GOT20B", Protocol.GOT20B);
 
-
 Protocol.TKSTAR = JClass(Protocol.Common,{
     STATIC: {
 
@@ -581,7 +581,7 @@ Protocol.VT900_DOOR = JClass(Protocol.Common,{
         posInfo.fuel = ary[22];
         posInfo.alt = ary[23];
         posInfo.rfid = ary[24];
-    },    
+    },
 });
 Protocol.ClassManager.add("VT900_DOOR", Protocol.VT900_DOOR);
 
