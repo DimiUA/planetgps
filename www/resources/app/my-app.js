@@ -92,6 +92,11 @@ function onDeviceReady(){
         StatusBar.styleDefault();
     }
 
+    if(window.isTablet){
+        screen.orientation.unlock('any');
+    }else{
+        screen.orientation.lock('portrait');
+    }
 
     setupPush();
 

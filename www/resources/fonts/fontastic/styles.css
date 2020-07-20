@@ -233,3 +233,9 @@
 .icon-settings:before {
   content: "\23";
 }
+.icon-report:before {
+  content: "\25";
+}
+.icon-refersh7:before {
+  content: "\24";
+}
